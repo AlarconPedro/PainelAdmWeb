@@ -1,0 +1,143 @@
+header.header {
+    background-color: #fff;
+    padding: 0px 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+    justify-content: space-between;
+}
+
+header.header h1 {
+    font-size: 1.5em;
+}
+
+header.header p {
+    font-size: 0.8em;
+}
+
+.areaUsuario {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1),
+                0 1px 15px 0 rgba(0, 0, 0, 0.4);
+}
+
+.areaUsuario img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.areaUsuario h6 {
+    align-items: center;
+    margin: 0px;
+    margin-right: 5px;
+    color: #000;
+}
+
+.areaUsuario i {
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 17px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1),
+        0 1px 15px 0 rgba(0, 0, 0, 0.4);
+
+}
+
+.areaUsuario:hover {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1),
+                0 1px 15px 0 rgba(0, 0, 0, 0.4);
+}
+
+.usuario {
+    display: flex;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    z-index: 100;
+}
+
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1),
+                0 1px 15px 0 rgba(0, 0, 0, 0.4);
+
+}
+
+.usuario img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.usuarioLogado h6 {
+    align-items: center;
+    margin: 0px;
+    margin-right: 5px;
+    color: #000;
+}
+
+/* .usuarioLogado img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+} */
+
+.usuarioSair i {
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 17px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1),
+        0 1px 15px 0 rgba(0, 0, 0, 0.4);
+
+}
+
+.sair {
+    color: #000;
+    margin-left: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.usuarioSair:hover {
+    cursor: pointer;
+}

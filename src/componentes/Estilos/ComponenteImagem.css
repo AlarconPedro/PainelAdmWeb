@@ -1,0 +1,92 @@
+.previewText {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+div.previewComponent {
+    margin-left: 60px;
+    margin-top: 1rem;
+    padding: 5px;
+    width: 100%;
+    height: 250px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    flex-direction: column;
+    display: flex;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+div.custom-file-upload {
+    margin: 0px;
+    border-radius:  5px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+div.custom-file-edit {
+    margin: 0px;
+    border-radius:  5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-file-upload label{
+    cursor: pointer;
+    padding: 0px;
+}
+
+.custom-file-edit label{
+    cursor: pointer;
+    padding: 0px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+div.imgPreview {
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.submitButton {
+    margin-top: 0.3rem;
+    padding: 0.3rem;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.imgPreview {
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.imgPreview img {
+    width: 100%;
+    height: 210px;
+    /* object-fit: fill;  */ /*ocupa todo o espaço do container*/
+    /* object-fit: cover; */ /* corta a imagem para caber no container */
+    object-fit: contain; /* mantém a proporção da imagem para couber no container */
+    /* object-fit: scale-down;*/ /* mantém a proporção da imagem */
+    border-radius: 5px;
+}

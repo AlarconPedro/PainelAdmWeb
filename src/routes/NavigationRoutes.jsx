@@ -9,10 +9,10 @@ export default nav => {
     return (
         <Routes>
             <Route path="/home" element={<Home />} />
-            <Route path="/vendedores" element={<Vendedores />} />
-            {localStorage.getItem("Admin") === "true" ? 
-                <Route path="/usuarios" element={<Usuarios/>}/> 
-            : null}
+            <Route path="/quartos" element={<Vendedores />} />
+            {localStorage.getItem("Admin") === "true" ?
+                <Route path="/usuarios" element={<Usuarios />} />
+                : null}
             <Route path="*" element={<Home />} />
         </Routes>
     );

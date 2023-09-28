@@ -23,8 +23,8 @@ export default props => {
                     <Link to={"/home"}>
                         <i className="fa fa-home"></i> Início
                     </Link>
-                    <Link to={"/vendedores"}>
-                        <i><BsFillPeopleFill /></i> Vendedores
+                    <Link to={"/quartos"}>
+                        <i><BsFillPeopleFill /></i> Quartos
                     </Link>
                     <Link to={"/usuarios"}>
                         <i><BsFillPeopleFill /></i> Usuarios
@@ -35,8 +35,8 @@ export default props => {
                     <Link to={"/home"}>
                         <i className="fa fa-home"></i> Início
                     </Link>
-                    <Link to={"/vendedores"}>
-                        <i><BsFillPeopleFill /></i> Vendedores
+                    <Link to={"/quartos"}>
+                        <i><BsFillPeopleFill /></i> Quartos
                     </Link> : null
                     {/* <div>
                     <p>

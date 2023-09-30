@@ -26,8 +26,17 @@ export default props => {
                     <Link to={"/quartos"}>
                         <i><BsFillPeopleFill /></i> Quartos
                     </Link>
+                    <Link to={"/eventos"}>
+                        <i><BsFillPeopleFill /></i> Eventos
+                    </Link>
                     <Link to={"/usuarios"}>
                         <i><BsFillPeopleFill /></i> Usuarios
+                    </Link>
+                    <Link to={"/pessoas"}>
+                        <i><BsFillPeopleFill /></i> Pessoas
+                    </Link>
+                    <Link to={"/comunidade"}>
+                        <i><BsFillPeopleFill /></i> Comunidade
                     </Link>
                 </nav>
                 :
@@ -37,7 +46,11 @@ export default props => {
                     </Link>
                     <Link to={"/quartos"}>
                         <i><BsFillPeopleFill /></i> Quartos
-                    </Link> : null
+                    </Link>
+                    <Link to={"/eventos"}>
+                        <i><BsFillPeopleFill /></i> Eventos
+                    </Link>
+
                     {/* <div>
                     <p>
                         <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">

@@ -7,7 +7,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "./login.css";
 
 import Imagem from "../../assets/imgs/logo.png";
-import Api from "../../services/Api";
+import AxiosConnection from "../../services/AxiosConnection";
 
 import Firebase from "../../services/Firebase";
 import { pessoaUrl } from "../../services/RotasApi";
@@ -33,10 +33,10 @@ export default function Login() {
         Logar(data);
     }
 
-    
+
     const buscarDadosUsuario = async (id) => {
         let dados;
-        await Api.get(`${pessoaUrl}login?codigoFirebase=${id}`).then((response) => {
+        await AxiosConnection.get(`${pessoaUrl}login?codigoFirebase=${id}`).then((response) => {
             dados = response.data;
             localStorage.setItem("Nome", dados.nome);
             localStorage.setItem("Codigo", dados.codigo);

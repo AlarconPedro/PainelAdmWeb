@@ -1,7 +1,3 @@
-import axios from "axios";
+import ApiPessoas from "./ApiRoutes/ApiPessoas";
 
-const api = axios.create({
-    baseURL: "https://localhost:7292/api/"
-});
-
-export default api;
+export const pessoas = ApiPessoas;

@@ -7,7 +7,7 @@ import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
 import FormExcluir from "../../forms/FormExcluir"
 
-import Api from "../../services/Api";
+import AxiosConnection from "../../services/AxiosConnection";
 
 import Firebase from "../../services/Firebase";
 
@@ -246,7 +246,7 @@ class Vendedores extends React.Component {
         this.state.pessoa.pesEmail = this.state.vendedor.pesEmail;
         this.state.pessoa.pesFone = this.state.vendedor.pesFone;
         this.state.pessoa.pesCelular = this.state.vendedor.pesCelular;
-        this.state.pessoa.pesCgccpf = this.state.vendedor.pesCgccpf;  
+        this.state.pessoa.pesCgccpf = this.state.vendedor.pesCgccpf;
         this.state.pessoa.pesComissao = this.state.vendedor.pesComissao;
         this.state.pessoa.pesStatus = this.state.vendedor.pesStatus;
         this.setState({ pessoa: this.state.pessoa });
@@ -276,7 +276,7 @@ class Vendedores extends React.Component {
         if (idUsuarioFirebase != undefined) {
             this.state.usuario.usuIdFirebase = idUsuarioFirebase.user.uid;
             let retorno;
-            var response = await Api.post(`${pessoaUrl}usuario`, this.state.usuario).then(response => {
+            var response = await AxiosConnection.post(`${pessoaUrl}usuario`, this.state.usuario).then(response => {
                 retorno = response.status;
             }).catch((error) => {
                 console.log(error);
@@ -291,7 +291,7 @@ class Vendedores extends React.Component {
 
     postVendedor = async () => {
         this.setState({ carregando: true });
-        await Api.post("pessoa", this.state.pessoa).then(response => {
+        await AxiosConnection.post("pessoa", this.state.pessoa).then(response => {
             return true;
         }).catch((error) => {
             console.log(error);
@@ -336,7 +336,7 @@ class Vendedores extends React.Component {
 
     putVendedor = async () => {
         this.setState({ carregando: true });
-        await Api.put(`${pessoaUrl}${this.state.pessoa.pesCodigo}`, this.state.pessoa).then(response => {
+        await AxiosConnection.put(`${pessoaUrl}${this.state.pessoa.pesCodigo}`, this.state.pessoa).then(response => {
             console.log(response.data);
         }).catch((error) => {
             console.log(error);
@@ -348,7 +348,7 @@ class Vendedores extends React.Component {
     getVendedores = async () => {
         this.setState({ carregando: true });
         var url = `${pessoaUrl}vendedores/${localStorage.getItem("Codigo")}`;
-        await Api.get(url).then(response => {
+        await AxiosConnection.get(url).then(response => {
             this.setState({ vendedoresData: response.data });
             this.setState({ carregando: false });
         }).catch((error) => {
@@ -361,7 +361,7 @@ class Vendedores extends React.Component {
         this.setState({ carregando: true });
         var url = `${pessoaUrl}usuario/${idUsuario}`;
         var retorno = [];
-        await Api.get(url).then(response => {
+        await AxiosConnection.get(url).then(response => {
             retorno = response.data;
         }).catch((error) => {
             console.log(error);
@@ -375,7 +375,7 @@ class Vendedores extends React.Component {
     getVendedorCodigo = async (codigo) => {
         this.setState({ carregando: true });
         var url = `${pessoaUrl}vendedor/${codigo}`;
-        await Api.get(url).then(response => {
+        await AxiosConnection.get(url).then(response => {
             console.log(response.data);
             this.setState({ vendedor: response.data });
             this.setState({ carregando: false });
@@ -387,7 +387,7 @@ class Vendedores extends React.Component {
 
     deleteUsuario = async () => {
         this.setState({ carregando: true });
-        await Api.delete(`${pessoaUrl}usuario/${this.state.vendedor.pesCodigo}`).then(response => {
+        await AxiosConnection.delete(`${pessoaUrl}usuario/${this.state.vendedor.pesCodigo}`).then(response => {
             console.log(response.data);
         }).catch((error) => {
             console.log(error);
@@ -397,7 +397,7 @@ class Vendedores extends React.Component {
 
     deleteVendedor = async () => {
         this.setState({ carregando: true });
-        await Api.delete(`${pessoaUrl}${this.state.vendedor.pesCodigo}`).then(response => {
+        await AxiosConnection.delete(`${pessoaUrl}${this.state.vendedor.pesCodigo}`).then(response => {
             console.log(response.data);
         }).catch((error) => {
             console.log(error);

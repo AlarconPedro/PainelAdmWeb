@@ -1,6 +1,6 @@
 import React from "react";
 
-import Api from "../../services/Api";
+import AxiosConnection from "../../services/AxiosConnection";
 
 import Firebase from "../../services/Firebase";
 import validator from 'validator'
@@ -153,7 +153,7 @@ class Usuarios extends React.Component {
 
     getUsuarios = async () => {
         this.setState({ carregando: true });
-        await Api.get(`${usuariosUrl}`).then((response) => {
+        await AxiosConnection.get(`${usuariosUrl}`).then((response) => {
             this.setState({ usuariosData: response.data });
         }).catch((error) => {
             console.log(error);
@@ -162,7 +162,7 @@ class Usuarios extends React.Component {
     }
 
     getDadosUsuario = async (usuario) => {
-        await Api.get(`${usuariosUrl}detalhes/${usuario.usuCodigo}`).then((response) => {
+        await AxiosConnection.get(`${usuariosUrl}detalhes/${usuario.usuCodigo}`).then((response) => {
             this.setState({ usuario: response.data });
         }).catch((error) => {
             console.log(error);
@@ -171,7 +171,7 @@ class Usuarios extends React.Component {
 
     getEmpresas = async () => {
         this.setState({ carregando: true });
-        await Api.get(`${empresasUrl}`).then((response) => {
+        await AxiosConnection.get(`${empresasUrl}`).then((response) => {
             this.setState({ empresasData: response.data });
             this.setState({ empresa: response.data[0] });
         }).catch((error) => {
@@ -193,7 +193,7 @@ class Usuarios extends React.Component {
                 // Signed in
                 var user = userCredential.user;
                 this.state.usuario.usuIdFirebase = user.uid;
-                await Api.post(`${usuariosUrl}${this.state.empresa.empCodigo}`, this.state.usuario).then((response) => {
+                await AxiosConnection.post(`${usuariosUrl}${this.state.empresa.empCodigo}`, this.state.usuario).then((response) => {
                     this.getUsuarios();
                 }).catch((error) => {
                     console.log(error);
@@ -220,7 +220,7 @@ class Usuarios extends React.Component {
     putUsuario = async () => {
         this.setState({ carregando: true });
         await this.preparaDados();
-        await Api.put(`${usuariosUrl}${this.state.usuario.usuCodigo}`, this.state.usuario).then((response) => {
+        await AxiosConnection.put(`${usuariosUrl}${this.state.usuario.usuCodigo}`, this.state.usuario).then((response) => {
             this.getUsuarios();
         }).catch((error) => {
             console.log(error);
@@ -234,7 +234,7 @@ class Usuarios extends React.Component {
             .then((response) => {
                 var user = response.user;
                 Firebase.auth().currentUser.delete().then(() => {
-                    Api.delete(`${usuariosUrl}${this.state.usuario.usuCodigo}`).then((response) => {
+                    AxiosConnection.delete(`${usuariosUrl}${this.state.usuario.usuCodigo}`).then((response) => {
                         this.getUsuarios();
                         this.setState({ abrirExcluir: false });
                     }).catch((error) => {

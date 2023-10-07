@@ -1,6 +1,7 @@
 import React from "react";
 
 import { FaBeer } from 'react-icons/fa';
+import { IoIosBed } from "react-icons/io";
 import {
     BsMegaphoneFill,
     BsFillBellFill,
@@ -24,10 +25,10 @@ export default props => {
                         <i className="fa fa-home"></i> Início
                     </Link>
                     <Link to={"/quartos"}>
-                        <i><BsFillPeopleFill /></i> Quartos
+                        <i><IoIosBed /></i> Quartos
                     </Link>
                     <Link to={"/eventos"}>
-                        <i><BsFillPeopleFill /></i> Eventos
+                        <i><BsFillCalendarFill /></i> Eventos
                     </Link>
                     <Link to={"/usuarios"}>
                         <i><BsFillPeopleFill /></i> Usuarios

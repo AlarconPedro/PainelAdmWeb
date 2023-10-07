@@ -38,6 +38,11 @@ class Pessoas extends React.Component {
         }
     }
 
+    handleChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ pessoa: { ...this.state.pessoa, [name]: value } });
+    }
+
     abrirFecharCadastro = () => {
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
         this.getPessoas();
@@ -58,8 +63,9 @@ class Pessoas extends React.Component {
     }
 
     getPessoas = async () => {
+        this.setState({ carregando: true });
         let pessoas = await apiPessoa.getPessoas();
-        this.setState({ pessoasData: pessoas });
+        this.setState({ pessoasData: pessoas, carregando: false });
     }
 
     getPessoaId = async (id) => {
@@ -67,9 +73,11 @@ class Pessoas extends React.Component {
         this.setState({ pessoa: pessoa, carregando: false });
     }
 
-    postPessoa = async (usuario) => {
-        await apiPessoa.postPessoa(usuario);
+    postPessoa = async (pessoa) => {
+        this.setState({ carregando: true });
+        await apiPessoa.postPessoa(pessoa);
         this.abrirFecharCadastro();
+        this.setState({ carregando: false });
     }
 
     componentDidMount() {

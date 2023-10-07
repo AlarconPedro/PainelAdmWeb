@@ -24,12 +24,13 @@ class ApiPessoas {
         return pessoa;
     }
 
-    static postPessoa(pessoa) {
-        return AxiosConnection.post(this.url, pessoa);
+    static async postPessoa(pessoa) {
+        let retorno = await AxiosConnection.post(this.url, pessoa);
+        return retorno;
     }
 
     static putPessoa(pessoa) {
-        return AxiosConnection.put(this.url + "/" + pessoa.id, pessoa);
+        return AxiosConnection.put(this.url + pessoa.id, pessoa);
     }
 
     static deletePessoa(id) {

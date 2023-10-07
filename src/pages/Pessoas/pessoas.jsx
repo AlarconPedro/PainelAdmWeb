@@ -12,17 +12,44 @@ class Pessoas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pessoasData: [],
-            pessoa: {},
             abrirCadastro: false,
             carregando: true,
             valido: true,
+            pessoasData: [],
+            comunidadeData: [],
+            pessoaInitialState: {
+                pesCodigo: 0,
+                pesNome: "",
+                pesGenero: "",
+                comCodigo: 0,
+            },
+            pessoa: {
+                pesCodigo: 0,
+                pesNome: "",
+                pesGenero: "",
+                comCodigo: 0,
+            },
+            comunidade: {
+                comCodigo: 0,
+                comNome: "",
+                comCidade: "",
+                comUF: "",
+            },
         }
     }
 
     abrirFecharCadastro = () => {
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
         this.getPessoas();
+    }
+
+    selecionarPessoa = (pessoa, operacao) => {
+        this.setState({ pessoa: pessoa });
+        if (operacao === "Editar") {
+            this.abrirFecharEditar();
+        } else {
+            this.abrirFecharExcluir();
+        }
     }
 
     getPessoasApi = async () => {
@@ -40,7 +67,7 @@ class Pessoas extends React.Component {
         this.setState({ pessoa: pessoa, carregando: false });
     }
 
-    postUsuario = async (usuario) => {
+    postPessoa = async (usuario) => {
         await apiPessoa.postPessoa(usuario);
         this.abrirFecharCadastro();
     }
@@ -75,18 +102,13 @@ class Pessoas extends React.Component {
                         {this.state.pessoasData.map((pessoa) => (
                             <tr key={pessoa.pesCodigo}>
                                 <td className="pt-3">{pessoa.pesNome}</td>
-                                <td className="pt-3">{pessoa.pesLogin}</td>
-                                <td className="pt-3">
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" checked={pessoa.usuAcessoCloud === "S" ? true : false} value={pessoa.usuAcessoCloud === "S" ? true : false} />
-                                    </div>
-                                </td>
-
+                                <td className="pt-3">{pessoa.pesGenero}</td>
+                                <td className="pt-3">{pessoa.comCodigo}</td>
                                 <td>
-                                    <button className="btn btn-warning" onClick={() => this.selecionarUsuario(pessoa, "Editar")}>
+                                    <button className="btn btn-warning" onClick={() => this.selecionarPessoa(pessoa, "Editar")}>
                                         <i className="fa fa-pencil"></i>
                                     </button>{" "}
-                                    <button className="btn btn-danger" onClick={() => this.selecionarUsuario(pessoa, "Excluir")}>
+                                    <button className="btn btn-danger" onClick={() => this.selecionarPessoa(pessoa, "Excluir")}>
                                         <i className="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -98,10 +120,30 @@ class Pessoas extends React.Component {
                     nome={"Pessoas"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
-                    funcPost={this.postUsuario}
+                    funcPost={this.postPessoa}
                 >
-                    {this.state.valido ? <form className="row g-3 form-group">
-                    </form>
+                    {this.state.valido ?
+                        <form className="row g-3 form-group">
+                            <div className="col-md-7">
+                                <label htmlFor="nome" className="form-label">Nome</label>
+                                <input type="text" className="form-control" id="nome" name="usuNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
+                            </div>
+                            <div className="col-md-5">
+                                <label htmlFor="comunidade" className="form-label">Comunidade</label>
+                                <select id="comunidade" className="form-select" name="comCodigo" value={this.state.pessoa.comCodigo} onChange={this.handleChange}>
+                                    {this.state.comunidadeData.map((comunidade) => (
+                                        <option value={comunidade.comCodigo}>{comunidade.comNome} - {comunidade.comCidade}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-md-2">
+                                <label htmlFor="status" className="form-label">Gênero</label>
+                                <select id="status" className="form-select" name="pesGenero" value={this.state.pessoa.pesGenero} onChange={this.handleChange}>
+                                    <option value={"M"}>Masculino</option>
+                                    <option value={"F"}>Feminino</option>
+                                </select>
+                            </div>
+                        </form>
                         :
                         <form className="row g-3 form-group">
                             <div className="alert alert-danger d-flex align-items-center h-25" role="alert">
@@ -115,5 +157,4 @@ class Pessoas extends React.Component {
         );
     }
 }
-
 export default Pessoas;

@@ -6,7 +6,7 @@ import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
 import FormExcluir from "../../forms/FormExcluir"
 
-import Api from "../../services/Api";
+import { apiPessoa } from "../../services/Api";
 
 class Pessoas extends React.Component {
     constructor(props) {
@@ -26,26 +26,27 @@ class Pessoas extends React.Component {
     }
 
     getPessoasApi = async () => {
-        let pessoas = await Api.pessoa.getPessoas();
+        let pessoas = await apiPessoa.getPessoas();
         this.setState({ pessoasData: pessoas });
     }
 
     getPessoas = async () => {
-        let pessoas = await ApiPessoas.getPessoas();
+        let pessoas = await apiPessoa.getPessoas();
         this.setState({ pessoasData: pessoas });
     }
 
     getPessoaId = async (id) => {
-        let pessoa = await ApiPessoas.getPessoa(id);
-        this.setState({ pessoa: pessoa });
+        let pessoa = await apiPessoa.getPessoa(id);
+        this.setState({ pessoa: pessoa, carregando: false });
     }
 
     postUsuario = async (usuario) => {
-        await ApiPessoas.postPessoa(usuario);
+        await apiPessoa.postPessoa(usuario);
         this.abrirFecharCadastro();
     }
 
     componentDidMount() {
+        this.setState({ carregando: true });
         this.getPessoas();
     }
 

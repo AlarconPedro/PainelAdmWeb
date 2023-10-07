@@ -25,15 +25,15 @@ class ApiComunidade {
     }
 
     static postComunidade(comunidade) {
-        return AxiosConnection.post(this.url, comunidade);
+        return AxiosConnection.post("comunidade/", comunidade);
     }
 
     static putComunidade(comunidade) {
-        return AxiosConnection.put(this.url + "/" + comunidade.id, comunidade);
+        return AxiosConnection.put("comunidade/" + comunidade.id, comunidade);
     }
 
     static deleteComunidade(id) {
-        return AxiosConnection.delete(this.url + "/" + id);
+        return AxiosConnection.delete("comunidade/" + id);
     }
 }
 

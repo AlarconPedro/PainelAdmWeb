@@ -17,7 +17,7 @@ import { pessoaUrl } from "../../services/RotasApi";
 import FormAcesso from "../../forms/FormAcesso";
 import { Alert } from "reactstrap";
 
-class Vendedores extends React.Component {
+class Quarto extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -435,54 +435,50 @@ class Vendedores extends React.Component {
             <React.Fragment>
                 <FormModel
                     urlApi={"http://localhost:3000/vendedores"}
-                    titulo="Cadastro Vendedores"
-                    subtitulo="Omega Agenda Comercial"
+                    titulo="Cadastro Quartos"
+                    subtitulo="CCMZ"
                     icone="user"
                     tipoContainer="form-container"
-                    Cabecalho="Vendedores"
-                    BotaoAdd="Adicionar Vendedor"
+                    Cabecalho="Quartos"
+                    BotaoAdd="Adicionar Quarto"
                     dadosApi={this.state.vendedoresData}
                     getDados={this.getVendedores}
                     getByNome={this.getVendedorNome}
                     funcAbrirCadastro={this.abrirFecharCadastro}
+                    carregando={this.state.carregando}
                     colunas={[
                         { nome: "Nome" },
-                        { nome: "Telefone" },
-                        { nome: "Comissão" },
-                        { nome: "Ativo" },
-                        { nome: "Acesso" },
+                        { nome: "Nome do Bloco" },
+                        { nome: "Qtd. Camas" },
                     ]}
                 >
-                    {this.state.carregando ? <div className="spinner-border loader" role="status" />
-                        :
-                        <tbody>
-                            {this.state.vendedoresData.map((vendedor) => (
-                                <tr key={vendedor.pesCodigo}>
-                                    <td className="pt-3">{vendedor.pesNome}</td>
-                                    <td className="pt-3">{vendedor.pesFone}</td>
-                                    <td className="pt-3">{vendedor.pesComissao} %</td>
-                                    <td className="pt-3">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" checked={vendedor.pesStatus} value={true} />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {/*                                         <Link className="text-decoration-none" to={"/atividades"} state={{ codigo: (vendedor.pesCodigo) }}> */}
-                                        <td className="pl-5 pt-3 listar" onClick={() => this.selecionarVendedor(vendedor, "Acesso")}><BsFillShieldLockFill /></td>
-                                        {/*                                         </Link> */}
-                                    </td>
-                                    <td>
-                                        <button className="btn btn-warning" onClick={() => this.selecionarVendedor(vendedor, "Editar")}>
-                                            <i className="fa fa-pencil"></i>
-                                        </button>{" "}
-                                        <button className="btn btn-danger" onClick={() => this.selecionarVendedor(vendedor, "Excluir")}>
-                                            <i className="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    }
+                    <tbody>
+                        {this.state.vendedoresData.map((vendedor) => (
+                            <tr key={vendedor.pesCodigo}>
+                                <td className="pt-3">{vendedor.pesNome}</td>
+                                <td className="pt-3">{vendedor.pesFone}</td>
+                                <td className="pt-3">{vendedor.pesComissao} %</td>
+                                <td className="pt-3">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" checked={vendedor.pesStatus} value={true} />
+                                    </div>
+                                </td>
+                                <td>
+                                    {/*                                         <Link className="text-decoration-none" to={"/atividades"} state={{ codigo: (vendedor.pesCodigo) }}> */}
+                                    <td className="pl-5 pt-3 listar" onClick={() => this.selecionarVendedor(vendedor, "Acesso")}><BsFillShieldLockFill /></td>
+                                    {/*                                         </Link> */}
+                                </td>
+                                <td>
+                                    <button className="btn btn-warning" onClick={() => this.selecionarVendedor(vendedor, "Editar")}>
+                                        <i className="fa fa-pencil"></i>
+                                    </button>{" "}
+                                    <button className="btn btn-danger" onClick={() => this.selecionarVendedor(vendedor, "Excluir")}>
+                                        <i className="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </FormModel>
                 <FormInserir
                     nome={"Vendedor"}
@@ -613,4 +609,4 @@ class Vendedores extends React.Component {
     }
 }
 
-export default Vendedores;
+export default Quarto;

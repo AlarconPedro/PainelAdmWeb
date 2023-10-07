@@ -1,6 +1,6 @@
 import React from "react";
 
-import Api from "../../services/Api";
+import { apiComunidade } from "../../services/Api";
 
 import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import FormModel from "../../forms/Modelo"
@@ -26,26 +26,27 @@ class Comunidade extends React.Component {
     }
 
     getComunidadeApi = async () => {
-        let comunidade = await Api.comunidade.getComunidade();
+        let comunidade = await apiComunidade.getComunidade();
         this.setState({ comunidadeData: comunidade });
     }
 
     getComunidade = async () => {
-        let comunidade = await Api.comunidade.getComunidade();
-        this.setState({ comunidadeData: comunidade });
+        let comunidade = await apiComunidade.getComunidade();
+        this.setState({ comunidadeData: comunidade, carregando: false });
     }
 
     getComunidadeId = async (id) => {
-        let comunidade = await Api.comunidade.getComunidade(id);
-        this.setState({ comunidade: comunidade });
+        let comunidade = await apiComunidade.getComunidade(id);
+        this.setState({ comunidade: comunidade, carregando: false });
     }
 
     postComunidade = async (usuario) => {
-        await Api.comunidade.postComunidade(usuario);
+        await apiComunidade.postComunidade(usuario);
         this.abrirFecharCadastro();
     }
 
     componentDidMount() {
+        this.setState({ carregando: true });
         this.getComunidade();
     }
 

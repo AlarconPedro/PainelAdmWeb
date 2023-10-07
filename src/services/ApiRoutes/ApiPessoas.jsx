@@ -1,5 +1,3 @@
-import React from "react";
-
 import AxiosConnection from "../AxiosConnection";
 
 class ApiPessoas {
@@ -36,7 +34,7 @@ class ApiPessoas {
 
     static deletePessoa(id) {
         return AxiosConnection.delete(this.url + "/" + id);
-    }
+    } ""
 }
 
 export default ApiPessoas;

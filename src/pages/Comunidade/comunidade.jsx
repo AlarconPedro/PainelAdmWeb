@@ -1,19 +1,19 @@
 import React from "react";
 
+import Api from "../../services/Api";
+
 import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import FormModel from "../../forms/Modelo"
 import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
 import FormExcluir from "../../forms/FormExcluir"
 
-import Api from "../../services/Api";
-
-class Pessoas extends React.Component {
+class Comunidade extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pessoasData: [],
-            pessoa: {},
+            comunidadeData: [],
+            comunidade: {},
             abrirCadastro: false,
             carregando: true,
             valido: true,
@@ -22,31 +22,31 @@ class Pessoas extends React.Component {
 
     abrirFecharCadastro = () => {
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
-        this.getPessoas();
+        this.getComunidade();
     }
 
-    getPessoasApi = async () => {
-        let pessoas = await Api.pessoa.getPessoas();
-        this.setState({ pessoasData: pessoas });
+    getComunidadeApi = async () => {
+        let comunidade = await Api.comunidade.getComunidade();
+        this.setState({ comunidadeData: comunidade });
     }
 
-    getPessoas = async () => {
-        let pessoas = await ApiPessoas.getPessoas();
-        this.setState({ pessoasData: pessoas });
+    getComunidade = async () => {
+        let comunidade = await Api.comunidade.getComunidade();
+        this.setState({ comunidadeData: comunidade });
     }
 
-    getPessoaId = async (id) => {
-        let pessoa = await ApiPessoas.getPessoa(id);
-        this.setState({ pessoa: pessoa });
+    getComunidadeId = async (id) => {
+        let comunidade = await Api.comunidade.getComunidade(id);
+        this.setState({ comunidade: comunidade });
     }
 
-    postUsuario = async (usuario) => {
-        await ApiPessoas.postPessoa(usuario);
+    postComunidade = async (usuario) => {
+        await Api.comunidade.postComunidade(usuario);
         this.abrirFecharCadastro();
     }
 
     componentDidMount() {
-        this.getPessoas();
+        this.getComunidade();
     }
 
     render() {
@@ -60,7 +60,7 @@ class Pessoas extends React.Component {
                     Cabecalho="Pessoas"
                     BotaoAdd="Adicionar Pessoa"
                     dadosApi={this.state.pessoasData}
-                    getDados={this.getPessoas}
+                    getDados={this.getComunidade}
                     getByNome={this.getVendedorNome}
                     funcAbrirCadastro={this.abrirFecharCadastro}
                     carregando={this.state.carregando}
@@ -71,21 +71,21 @@ class Pessoas extends React.Component {
                     ]}
                 >
                     <tbody>
-                        {this.state.pessoasData.map((pessoa) => (
-                            <tr key={pessoa.pesCodigo}>
-                                <td className="pt-3">{pessoa.pesNome}</td>
-                                <td className="pt-3">{pessoa.pesLogin}</td>
+                        {this.state.comunidadeData.map((comunidade) => (
+                            <tr key={comunidade.comCodigo}>
+                                <td className="pt-3">{comunidade.comNome}</td>
+                                <td className="pt-3">{comunidade.comNumero}</td>
                                 <td className="pt-3">
                                     <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" checked={pessoa.usuAcessoCloud === "S" ? true : false} value={pessoa.usuAcessoCloud === "S" ? true : false} />
+                                        <input className="form-check-input" type="checkbox" checked={comunidade.usuAcessoCloud === "S" ? true : false} value={comunidade.usuAcessoCloud === "S" ? true : false} />
                                     </div>
                                 </td>
 
                                 <td>
-                                    <button className="btn btn-warning" onClick={() => this.selecionarUsuario(pessoa, "Editar")}>
+                                    <button className="btn btn-warning" onClick={() => this.selecionarUsuario(comunidade, "Editar")}>
                                         <i className="fa fa-pencil"></i>
                                     </button>{" "}
-                                    <button className="btn btn-danger" onClick={() => this.selecionarUsuario(pessoa, "Excluir")}>
+                                    <button className="btn btn-danger" onClick={() => this.selecionarUsuario(comunidade, "Excluir")}>
                                         <i className="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -115,4 +115,4 @@ class Pessoas extends React.Component {
     }
 }
 
-export default Pessoas;
+export default Comunidade;

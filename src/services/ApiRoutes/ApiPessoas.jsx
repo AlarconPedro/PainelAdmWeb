@@ -4,21 +4,23 @@ import AxiosConnection from "../AxiosConnection";
 
 class ApiPessoas {
     constructor(props) {
-        super(props);
         this.url = "pessoa/";
     }
 
     static getPessoas = async () => {
         let pessoasData = [];
-        await AxiosConnection.get(this.url).then((response) => {
+        await AxiosConnection.get("pessoa/").then((response) => {
+            console.log(response.data);
             pessoasData = response.data;
+        }).catch((error) => {
+            console.log(error);
         });
         return pessoasData;
     }
 
     static getPessoa = async (id) => {
         let pessoa = {};
-        await AxiosConnection.get(this.url + id).then((response) => {
+        await AxiosConnection.get(`pessoa/${id}`).then((response) => {
             pessoa = response.data;
         });
         return pessoa;

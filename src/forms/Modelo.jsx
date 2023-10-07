@@ -9,6 +9,7 @@ class Modelo extends React.Component {
         super(props);
         this.state = {
             abrir: false,
+            carregando: false,
             urlApi: "",
             icone: "",
             titulo: "",
@@ -41,7 +42,7 @@ class Modelo extends React.Component {
             this.setState({ variaveis: this.props.variaveis });
         }
     }
-    
+
     abrirFecharCadastro = () => {
         this.setState({ abrir: this.state.abrir });
         this.props.funcAbrirCadastro(this.state.abrir);
@@ -58,19 +59,22 @@ class Modelo extends React.Component {
                     <hr />
                     <Busca buscar={this.props.getByNome} />
                     <br />
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                {this.props.colunas.map((coluna, index) => {
-                                    return (
-                                        <th key={index}>{coluna.nome}</th>
-                                    )
-                                })}
-                                <th className="acoes">Ações</th>
-                            </tr>
-                        </thead>
-                        {this.props.children}
-                    </table>
+                    {this.state.carregando ?
+                        <div className="spinner-border loader" role="status" />
+                        :
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    {this.props.colunas.map((coluna, index) => {
+                                        return (
+                                            <th key={index}>{coluna.nome}</th>
+                                        )
+                                    })}
+                                    <th className="acoes">Ações</th>
+                                </tr>
+                            </thead>
+                            {this.props.children}
+                        </table>}
                     <hr />
                     <br />
                 </div>

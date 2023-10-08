@@ -161,6 +161,43 @@ class Pessoas extends React.Component {
                             </div>
                         </form>}
                 </FormInserir>
+                <FormEditar
+                    nome={"Pessoas"}
+                    abrir={this.state.abrirEditar}
+                    funcAbrir={this.abrirFecharEditar}
+                    funcPut={this.putPessoa}
+                >
+                    {this.state.valido ?
+                        <form className="row g-3 form-group">
+                            <div className="col-md-7">
+                                <label htmlFor="nome" className="form-label">Nome</label>
+                                <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
+                            </div>
+                            <div className="col-md-5">
+                                <label htmlFor="comunidade" className="form-label">Comunidade</label>
+                                <select id="comunidade" className="form-select" name="comCodigo" value={this.state.pessoa.comCodigo} onChange={this.handleChange}>
+                                    {this.state.comunidadeData.map((comunidade) => (
+                                        <option value={comunidade.comCodigo}>{comunidade.comNome} - {comunidade.comCidade}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-md-2">
+                                <label htmlFor="status" className="form-label">Gênero</label>
+                                <select id="status" className="form-select" name="pesGenero" value={this.state.pessoa.pesGenero} onChange={this.handleChange}>
+                                    <option value={"M"}>Masculino</option>
+                                    <option value={"F"}>Feminino</option>
+                                </select>
+                            </div>
+                        </form>
+                        :
+                        <form className="row g-3 form-group">
+                            <div className="alert alert-danger d-flex align-items-center h-25" role="alert">
+                                <div>
+                                    <i className="fa fa-exclamation-triangle"> {this.state.textoValido}</i>
+                                </div>
+                            </div>
+                        </form>}
+                </FormEditar>
             </React.Fragment>
         );
     }

@@ -54,13 +54,13 @@ class Comunidade extends React.Component {
         return (
             <React.Fragment>
                 <FormModel
-                    titulo="Cadastro Pessoas"
+                    titulo="Cadastro Comunidade"
                     subtitulo="CCMZ"
                     icone="user"
                     tipoContainer="form-container"
-                    Cabecalho="Pessoas"
-                    BotaoAdd="Adicionar Pessoa"
-                    dadosApi={this.state.pessoasData}
+                    Cabecalho="Comunidades"
+                    BotaoAdd="Adicionar Comunidade"
+                    dadosApi={this.state.comunidadeData}
                     getDados={this.getComunidade}
                     getByNome={this.getVendedorNome}
                     funcAbrirCadastro={this.abrirFecharCadastro}
@@ -95,13 +95,26 @@ class Comunidade extends React.Component {
                     </tbody>
                 </FormModel>
                 <FormInserir
-                    nome={"Pessoas"}
+                    nome={"Comunidades"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
                     funcPost={this.postUsuario}
                 >
-                    {this.state.valido ? <form className="row g-3 form-group">
-                    </form>
+                    {this.state.valido ?
+                        <form className="row g-3 form-group">
+                            <div className="col-md-5">
+                                <label htmlFor="nome" className="form-label">Nome</label>
+                                <input type="text" className="form-control" id="nome" name="comNome" value={this.state.comunidade.comNome} onChange={this.handleChange} />
+                            </div>
+                            <div className="col-md-5">
+                                <label htmlFor="cidade" className="form-label">Cidade</label>
+                                <input type="text" className="form-control" id="cidade" name="comCidade" value={this.state.comunidade.comCidade} onChange={this.handleChange} />
+                            </div>
+                            <div className="col-md-2">
+                                <label htmlFor="UF" className="form-label">UF</label>
+                                <input type="text" className="form-control" id="UF" name="comUF" maxLength={2} value={this.state.comunidade.comUF} onChange={this.handleChange} />
+                            </div>
+                        </form>
                         :
                         <form className="row g-3 form-group">
                             <div className="alert alert-danger d-flex align-items-center h-25" role="alert">

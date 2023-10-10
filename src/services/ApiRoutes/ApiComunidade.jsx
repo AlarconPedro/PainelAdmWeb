@@ -16,7 +16,7 @@ class ApiComunidade {
         return comunidadeData;
     }
 
-    static getComunidade = async (id) => {
+    static getComunidadeId = async (id) => {
         let comunidade = {};
         await AxiosConnection.get(`comunidade/${id}`).then((response) => {
             comunidade = response.data;
@@ -25,7 +25,11 @@ class ApiComunidade {
     }
 
     static postComunidade(comunidade) {
-        return AxiosConnection.post("comunidade/", comunidade);
+        return AxiosConnection.post("comunidade/", comunidade).then((response) => {
+            return response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     static putComunidade(comunidade) {

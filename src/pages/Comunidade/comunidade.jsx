@@ -2,6 +2,8 @@ import React from "react";
 
 import { apiComunidade } from "../../services/Api";
 
+import ApiComunidade from "../../services/ApiRoutes/ApiComunidade";
+
 import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import FormModel from "../../forms/Modelo"
 import FormInserir from "../../forms/FormInserir"
@@ -13,11 +15,21 @@ class Comunidade extends React.Component {
         super(props);
         this.state = {
             comunidadeData: [],
-            comunidade: {},
+            comunidade: {
+                comCodigo: 0,
+                comNome: "",
+                comCidade: "",
+                comUF: "",
+            },
             abrirCadastro: false,
             carregando: true,
             valido: true,
         }
+    }
+
+    handleChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ comunidade: { ...this.state.comunidade, [name]: value } });
     }
 
     abrirFecharCadastro = () => {
@@ -25,23 +37,23 @@ class Comunidade extends React.Component {
         this.getComunidade();
     }
 
-    getComunidadeApi = async () => {
-        let comunidade = await apiComunidade.getComunidade();
-        this.setState({ comunidadeData: comunidade });
-    }
-
     getComunidade = async () => {
-        let comunidade = await apiComunidade.getComunidade();
+        let comunidade = await ApiComunidade.getComunidade();
         this.setState({ comunidadeData: comunidade, carregando: false });
     }
 
+    getComunidadeApi = async () => {
+        let comunidade = await ApiComunidade.getComunidade();
+        this.setState({ comunidadeData: comunidade });
+    }
+
     getComunidadeId = async (id) => {
-        let comunidade = await apiComunidade.getComunidade(id);
+        let comunidade = await ApiComunidade.getComunidade(id);
         this.setState({ comunidade: comunidade, carregando: false });
     }
 
-    postComunidade = async (usuario) => {
-        await apiComunidade.postComunidade(usuario);
+    postComunidade = async () => {
+        await ApiComunidade.postComunidade(this.state.comunidade);
         this.abrirFecharCadastro();
     }
 
@@ -98,7 +110,7 @@ class Comunidade extends React.Component {
                     nome={"Comunidades"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
-                    funcPost={this.postUsuario}
+                    funcPost={this.postComunidade}
                 >
                     {this.state.valido ?
                         <form className="row g-3 form-group">

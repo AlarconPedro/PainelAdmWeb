@@ -48,6 +48,16 @@ class Pessoas extends React.Component {
         this.getPessoas();
     }
 
+    abrirFecharEditar = () => {
+        this.setState({ abrirEditar: !this.state.abrirEditar });
+        this.getPessoas();
+    }
+
+    abrirFecharExcluir = () => {
+        this.setState({ abrirExcluir: !this.state.abrirExcluir });
+        this.getPessoas();
+    }
+
     selecionarPessoa = (pessoa, operacao) => {
         this.setState({ pessoa: pessoa });
         if (operacao === "Editar") {
@@ -77,6 +87,13 @@ class Pessoas extends React.Component {
         this.setState({ carregando: true });
         await apiPessoa.postPessoa(pessoa);
         this.abrirFecharCadastro();
+        this.setState({ carregando: false });
+    }
+
+    putPessoa = async (pessoa) => {
+        this.setState({ carregando: true });
+        await apiPessoa.putPessoa(pessoa);
+        this.abrirFecharEditar();
         this.setState({ carregando: false });
     }
 

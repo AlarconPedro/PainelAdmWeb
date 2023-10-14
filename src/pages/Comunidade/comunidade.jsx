@@ -76,17 +76,29 @@ class Comunidade extends React.Component {
     }
 
     postComunidade = async () => {
-        await ApiComunidade.postComunidade(this.state.comunidade);
-        this.abrirFecharCadastro();
-        this.setState({ comunidade: this.state.comunidadeInitialState });
+        let retorno;
+        retorno = await ApiComunidade.postComunidade(this.state.comunidade);
+        if (retorno == 200) {
+            this.setState({ valido: true });
+            this.abrirFecharCadastro();
+            this.setState({ comunidade: this.state.comunidadeInitialState });
+        } else {
+            this.setState({ valido: false, textoValido: "Erro ao inserir comunidade" });
+        }
     }
 
     putComunidade = async () => { }
 
     deleteComunidade = async () => {
-        await ApiComunidade.deleteComunidade(this.state.comunidade.comCodigo);
-        this.abrirFecharExcluir();
-        this.setState({ comunidade: this.state.comunidadeInitialState });
+        let retorno;
+        retorno = await ApiComunidade.deleteComunidade(this.state.comunidade.comCodigo);
+        if (retorno == 200) {
+            this.setState({ valido: true });
+            this.abrirFecharExcluir();
+            this.setState({ comunidade: this.state.comunidadeInitialState });
+        } else {
+            this.setState({ valido: false, textoValido: "Erro ao excluir comunidade" });
+        }
     }
 
     componentDidMount() {

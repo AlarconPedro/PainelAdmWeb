@@ -24,10 +24,10 @@ class ApiComunidade {
         return comunidade;
     }
 
-    static postComunidade(comunidade) {
+    static postComunidade = async (comunidade) => {
         let retorno;
-        AxiosConnection.post("comunidade/", comunidade).then((response) => {
-            retorno = response.data;
+        await AxiosConnection.post("comunidade/", comunidade).then((response) => {
+            retorno = response.status;
         }).catch((error) => {
             console.log(error);
         });
@@ -35,11 +35,13 @@ class ApiComunidade {
     }
 
     static putComunidade(comunidade) {
-        return AxiosConnection.put("comunidade/" + comunidade.id, comunidade);
+        AxiosConnection.put("comunidade/" + comunidade.id, comunidade);
     }
 
-    static deleteComunidade(id) {
-        return AxiosConnection.delete("comunidade/" + id);
+    static deleteComunidade = async (id) => {
+        let retorno;
+        retorno = await AxiosConnection.delete("comunidade/" + id);
+        return retorno.status;
     }
 }
 

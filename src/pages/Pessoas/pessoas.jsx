@@ -1,12 +1,12 @@
 import React from "react";
 
-import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import FormModel from "../../forms/Modelo"
 import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
 import FormExcluir from "../../forms/FormExcluir"
 
-import { apiPessoa } from "../../services/Api";
+import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
+import ApiComunidade from "../../services/ApiRoutes/ApiComunidade";
 
 class Pessoas extends React.Component {
     constructor(props) {
@@ -43,7 +43,8 @@ class Pessoas extends React.Component {
         this.setState({ pessoa: { ...this.state.pessoa, [name]: value } });
     }
 
-    abrirFecharCadastro = () => {
+    abrirFecharCadastro = async () => {
+        await this.getComunidades();
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
         this.getPessoas();
     }
@@ -67,33 +68,59 @@ class Pessoas extends React.Component {
         }
     }
 
+    getComunidades = async () => {
+        let comunidade = await ApiComunidade.getComunidade();
+        this.setState({ comunidadeData: comunidade });
+    }
+
     getPessoasApi = async () => {
-        let pessoas = await apiPessoa.getPessoas();
+        let pessoas = await ApiPessoas.getPessoas();
         this.setState({ pessoasData: pessoas });
     }
 
     getPessoas = async () => {
         this.setState({ carregando: true });
-        let pessoas = await apiPessoa.getPessoas();
+        let pessoas = await ApiPessoas.getPessoas();
         this.setState({ pessoasData: pessoas, carregando: false });
     }
 
     getPessoaId = async (id) => {
-        let pessoa = await apiPessoa.getPessoa(id);
+        let pessoa = await ApiPessoas.getPessoa(id);
         this.setState({ pessoa: pessoa, carregando: false });
     }
 
-    postPessoa = async (pessoa) => {
+    postPessoa = async () => {
+        let retorno;
         this.setState({ carregando: true });
-        await apiPessoa.postPessoa(pessoa);
-        this.abrirFecharCadastro();
+        retorno = await ApiPessoas.postPessoa(this.state.pessoa);
+        if (retorno == 200) {
+            this.setState({ valido: true });
+            this.setState({ pessoa: this.state.pessoaInitialState });
+            this.abrirFecharCadastro();
+        } else {
+            this.setState({ valido: false, textoValido: "Erro ao cadastrar Pessoa !" });
+        }
         this.setState({ carregando: false });
     }
 
     putPessoa = async (pessoa) => {
         this.setState({ carregando: true });
-        await apiPessoa.putPessoa(pessoa);
+        await ApiPessoas.putPessoa(pessoa);
         this.abrirFecharEditar();
+        this.setState({ carregando: false });
+    }
+
+    deletePessoa = async () => {
+        let retorno;
+        this.setState({ carregando: true });
+        retorno = await ApiPessoas.deletePessoa(this.state.pessoa.pesCodigo);
+        if (retorno == 200) {
+            this.setState({ valido: true });
+            this.setState({ pessoa: this.state.pessoaInitialState });
+            this.abrirFecharExcluir();
+        } else {
+            this.setState({ valido: false, textoValido: "Erro ao excluir Pessoa !" });
+        }
         this.setState({ carregando: false });
     }
 
@@ -151,7 +178,7 @@ class Pessoas extends React.Component {
                         <form className="row g-3 form-group">
                             <div className="col-md-7">
                                 <label htmlFor="nome" className="form-label">Nome</label>
-                                <input type="text" className="form-control" id="nome" name="usuNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
+                                <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
                             </div>
                             <div className="col-md-5">
                                 <label htmlFor="comunidade" className="form-label">Comunidade</label>
@@ -215,6 +242,13 @@ class Pessoas extends React.Component {
                             </div>
                         </form>}
                 </FormEditar>
+                <FormExcluir
+                    nome={"Pessoas"}
+                    abrir={this.state.abrirExcluir}
+                    funcAbrir={this.abrirFecharExcluir}
+                    funcDelete={this.deletePessoa}
+                    dados={this.state.pessoa.pesNome}
+                />
             </React.Fragment>
         );
     }

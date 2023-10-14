@@ -25,8 +25,8 @@ class ApiPessoas {
     }
 
     static async postPessoa(pessoa) {
-        let retorno = await AxiosConnection.post(this.url, pessoa);
-        return retorno;
+        let retorno = await AxiosConnection.post("pessoa/", pessoa);
+        return retorno.status;
     }
 
     static putPessoa(pessoa) {

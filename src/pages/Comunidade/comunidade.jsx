@@ -66,16 +66,19 @@ class Comunidade extends React.Component {
     }
 
     getComunidade = async () => {
+        this.setState({ carregando: true });
         let comunidade = await ApiComunidade.getComunidade();
         this.setState({ comunidadeData: comunidade, carregando: false });
     }
 
     getComunidadeId = async (id) => {
+        this.setState({ carregando: true });
         let comunidade = await ApiComunidade.getComunidade(id);
         this.setState({ comunidade: comunidade, carregando: false });
     }
 
     postComunidade = async () => {
+        this.setState({ carregando: true });
         let retorno;
         retorno = await ApiComunidade.postComunidade(this.state.comunidade);
         if (retorno == 200) {
@@ -83,7 +86,7 @@ class Comunidade extends React.Component {
             this.abrirFecharCadastro();
             this.setState({ comunidade: this.state.comunidadeInitialState });
         } else {
-            this.setState({ valido: false, textoValido: "Erro ao inserir comunidade" });
+            this.setState({ valido: false, textoValido: "Erro ao inserir comunidade", carregando: false });
         }
     }
 
@@ -91,13 +94,14 @@ class Comunidade extends React.Component {
 
     deleteComunidade = async () => {
         let retorno;
+        this.setState({ carregando: true });
         retorno = await ApiComunidade.deleteComunidade(this.state.comunidade.comCodigo);
         if (retorno == 200) {
             this.setState({ valido: true });
             this.abrirFecharExcluir();
             this.setState({ comunidade: this.state.comunidadeInitialState });
         } else {
-            this.setState({ valido: false, textoValido: "Erro ao excluir comunidade" });
+            this.setState({ valido: false, textoValido: "Erro ao excluir comunidade", carregando: false });
         }
     }
 

@@ -25,11 +25,13 @@ class ApiComunidade {
     }
 
     static postComunidade(comunidade) {
-        return AxiosConnection.post("comunidade/", comunidade).then((response) => {
-            return response.data;
+        let retorno;
+        AxiosConnection.post("comunidade/", comunidade).then((response) => {
+            retorno = response.data;
         }).catch((error) => {
             console.log(error);
         });
+        return retorno;
     }
 
     static putComunidade(comunidade) {

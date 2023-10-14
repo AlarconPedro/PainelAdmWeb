@@ -39,7 +39,7 @@ class FormExcluir extends React.Component {
             <Modal isOpen={this.state.abrir}>
                 <ModalHeader>Excluir {this.props.nome}</ModalHeader>
                 <ModalBody>
-                    Deseja excluir o Vendedor : {this.props.dados}?
+                    Deseja excluir : {this.props.dados}?
                 </ModalBody>
                 <ModalFooter>
                     <button className="btn btn-danger" onClick={() => this.deletarAluno()}>Sim</button>

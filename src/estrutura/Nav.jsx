@@ -24,6 +24,9 @@ export default props => {
                     <Link to={"/home"}>
                         <i className="fa fa-home"></i> Início
                     </Link>
+                    <Link to={"/blocos"}>
+                        <i><IoIosBed /></i> Blocos
+                    </Link>
                     <Link to={"/quartos"}>
                         <i><IoIosBed /></i> Quartos
                     </Link>

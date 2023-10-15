@@ -2,7 +2,6 @@ import React from "react";
 
 import ApiComunidade from "../../services/ApiRoutes/ApiComunidade";
 
-import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import FormModel from "../../forms/Modelo"
 import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
@@ -138,7 +137,7 @@ class Comunidade extends React.Component {
                                 <td className="pt-3">{comunidade.comNome}</td>
                                 <td className="pt-3">{comunidade.comCidade}</td>
                                 <td className="pt-3">{comunidade.comUf}</td>
-                                <td className="pt-3">0</td>
+                                <td className="pt-3">{comunidade.qtdPessoas}</td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarComunidade(comunidade, "Editar")}>
                                         <i className="fa fa-pencil"></i>

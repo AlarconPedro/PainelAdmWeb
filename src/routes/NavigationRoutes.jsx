@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import Home from '../pages/Home/Home';
+import Blocos from '../pages/Blocos/blocos';
 import Quartos from '../pages/Quartos/quartos';
 import Eventos from '../pages/Eventos/eventos';
 import Usuarios from '../pages/Usuarios/usuarios'
@@ -12,6 +13,7 @@ export default nav => {
     return (
         <Routes>
             <Route path="/home" element={<Home />} />
+            <Route path="/blocos" element={<Blocos />} />
             <Route path="/quartos" element={<Quartos />} />
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/pessoas" element={<Pessoas />} />

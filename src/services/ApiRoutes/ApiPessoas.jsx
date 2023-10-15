@@ -33,9 +33,11 @@ class ApiPessoas {
         return AxiosConnection.put(this.url + pessoa.id, pessoa);
     }
 
-    static deletePessoa(id) {
-        return AxiosConnection.delete(this.url + "/" + id);
-    } ""
+    static deletePessoa = async (id) => {
+        let retorno;
+        retorno = await AxiosConnection.delete("pessoa/" + id);
+        return retorno.status;
+    }
 }
 
 export default ApiPessoas;

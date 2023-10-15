@@ -26,7 +26,7 @@ class Pessoas extends React.Component {
             pessoa: {
                 pesCodigo: 0,
                 pesNome: "",
-                pesGenero: "",
+                pesGenero: "M",
                 comCodigo: 0,
             },
             comunidade: {
@@ -70,7 +70,7 @@ class Pessoas extends React.Component {
 
     getComunidades = async () => {
         let comunidade = await ApiComunidade.getComunidade();
-        this.setState({ comunidadeData: comunidade });
+        this.setState({ comunidadeData: comunidade, pessoa: { ...this.state.pessoa, comCodigo: comunidade[0].comCodigo } });
     }
 
     getPessoasApi = async () => {
@@ -155,7 +155,7 @@ class Pessoas extends React.Component {
                             <tr key={pessoa.pesCodigo}>
                                 <td className="pt-3">{pessoa.pesNome}</td>
                                 <td className="pt-3">{pessoa.pesGenero}</td>
-                                <td className="pt-3">{pessoa.comCodigo}</td>
+                                <td className="pt-3">{pessoa.comunidade}</td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarPessoa(pessoa, "Editar")}>
                                         <i className="fa fa-pencil"></i>

@@ -28,16 +28,7 @@ class Quarto extends React.Component {
             carregando: false,
             valido: true,
             textoValido: "",
-            vendedoresData: [],
-            usuarioData: [],
-            vendedoresInitialState: {
-                pesCodigo: 0,
-                pesNome: "",
-                pesEmail: "",
-                pesFone: "",
-                pesComissao: 0,
-                pesStatus: "",
-            },
+            quartoData: [],
             usuarioInitialState: {
                 usuCodigo: 0,
                 usuNome: "",

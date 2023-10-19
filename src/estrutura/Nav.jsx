@@ -2,6 +2,7 @@ import React from "react";
 
 import { FaBeer } from 'react-icons/fa';
 import { IoIosBed } from "react-icons/io";
+import { GiFamilyHouse } from "react-icons/gi"
 import {
     BsMegaphoneFill,
     BsFillBellFill,
@@ -25,7 +26,7 @@ export default props => {
                         <i className="fa fa-home"></i> Início
                     </Link>
                     <Link to={"/blocos"}>
-                        <i><IoIosBed /></i> Blocos
+                        <i><GiFamilyHouse /></i> Blocos
                     </Link>
                     <Link to={"/quartos"}>
                         <i><IoIosBed /></i> Quartos

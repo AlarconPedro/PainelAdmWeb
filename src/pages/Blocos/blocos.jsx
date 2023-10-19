@@ -63,13 +63,33 @@ class Blocos extends React.Component {
         this.setState({ blocosData: blocos, carregando: false });
     }
 
+    postBloco = async () => {
+        this.setState({ carregando: true })
+        let retorno = await ApiBlocos.postBloco(this.state.bloco);
+        if (retorno === 200) {
+            this.setState({ carregando: false, bloco: this.state.blocoInitialState })
+            return true;
+        }
+        return false;
+    }
+
+    deleteBloco = async () => {
+        this.setState({ carregando: true });
+        let retorno = await ApiBlocos.deleteBloco(this.state.bloco.bloCodigo);
+        if (retorno === 200) {
+            this.setState({ carregando: false, bloco: this.state.blocoInitialState });
+            return true;
+        }
+        return false;
+    }
+
     render() {
         return (
             <React.Fragment>
                 <FormModel
                     titulo="Cadastro Blocos"
                     subtitulo="CCMZ"
-                    icone="user"
+                    icone="building"
                     tipoContainer="form-container"
                     Cabecalho="Blocos"
                     BotaoAdd="Adicionar Bloco"
@@ -108,13 +128,13 @@ class Blocos extends React.Component {
                     nome={"Bloco"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
-                    funcPost={this.postComunidade}
+                    funcPost={this.postBloco}
                 >
                     {this.state.valido ?
                         <form className="row g-3 form-group">
                             <div className="col-md-5">
                                 <label htmlFor="nome" className="form-label">Nome</label>
-                                <input type="text" className="form-control" id="nome" name="comNome" value={this.state.bloco.bloNome} onChange={this.handleChange} />
+                                <input type="text" className="form-control" id="nome" name="bloNome" value={this.state.bloco.bloNome} onChange={this.handleChange} />
                             </div>
                         </form>
                         :
@@ -130,7 +150,7 @@ class Blocos extends React.Component {
                     nome={"Comunidades"}
                     abrir={this.state.abrirEditar}
                     funcAbrir={this.abrirFecharEditar}
-                    funcPut={this.putComunidade}
+                    funcPut={this.updateBloco}
                 >
                     {this.state.valido ?
                         <form className="row g-3 form-group">
@@ -150,11 +170,11 @@ class Blocos extends React.Component {
                     }
                 </FormEditar>
                 <FormExcluir
-                    nome={"Comunidades"}
+                    nome={"Bloco"}
                     dados={this.state.bloco.bloNome}
                     abrir={this.state.abrirExcluir}
                     funcAbrir={this.abrirFecharExcluir}
-                    funcDelete={this.deleteComunidade}
+                    funcDelete={this.deleteBloco}
                 />
             </React.Fragment>
         );

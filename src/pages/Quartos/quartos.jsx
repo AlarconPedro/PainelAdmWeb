@@ -47,12 +47,7 @@ class Quarto extends React.Component {
 
     componentDidMount() {
         this.setState({ carregando: true });
-        this.getVendedores();
-    }
-
-    changeCadastro = (event) => {
-        const { name, value } = event.target;
-        this.setState({ pessoa: { ...this.state.pessoa, [name]: value } });
+        this.getQuartos();
     }
 
     handleChange = (event) => {
@@ -72,18 +67,18 @@ class Quarto extends React.Component {
 
     abrirFecharCadastro = () => {
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
-        this.setState({ vendedor: this.state.vendedoresInitialState });
+        this.setState({ quarto: this.state.quartoInitialState });
         this.getQuartos();
     }
     abrirFecharEditar = () => {
         this.setState({ abrirEditar: !this.state.abrirEditar });
-        this.setState({ vendedor: this.state.vendedoresInitialState });
+        this.setState({ quarto: this.state.quartoInitialState });
         this.getQuartos();
     }
 
     abrirFecharExcluir = () => {
         this.setState({ abrirExcluir: !this.state.abrirExcluir });
-        this.setState({ vendedor: this.state.vendedoresInitialState });
+        this.setState({ quarto: this.state.quartoInitialState });
         this.getQuartos();
     }
 
@@ -91,6 +86,15 @@ class Quarto extends React.Component {
         this.setState({ carregando: true })
         let quartos = await ApiQuartos.getQuartos();
         this.setState({ quartoData: quartos, carregando: false })
+    }
+
+    postQuartos = async () => {
+        this.setState({ carregando: true });
+        let retorno = await ApiQuartos.postQuartos(this.state.quarto);
+        if (retorno === 200) {
+            this.setState({ carregando: false, quarto: quartoInitialState });
+            this.getQuartos();
+        }
     }
 
     render() {
@@ -217,7 +221,7 @@ class Quarto extends React.Component {
                     nome={"Quarto"}
                     abrir={this.state.abrirExcluir}
                     dados={this.state.quarto.quaNome}
-                    funcDelete={this.deleteVendedor}
+                    funcDelete={this.deleteQuarto}
                     funcAbrir={this.abrirFecharExcluir}
                 />
             </React.Fragment>

@@ -13,7 +13,9 @@ class Eventos extends React.Component {
         super(props);
         this.state = {
             eventosData: [],
+            comunidadesData: [],
             evento: {},
+            comunidade: {},
             abrirCadastro: false,
             carregando: true,
             valido: true,
@@ -84,11 +86,64 @@ class Eventos extends React.Component {
                     </tbody>
                 </FormModel>
                 <FormInserir
-                    post={this.postEvento}
-                    abrirFecharCadastro={this.abrirFecharCadastro}
-                    carregando={this.state.carregando}
+                    nome={"Comunidades"}
+                    abrir={this.state.abrirCadastro}
+                    funcAbrir={this.abrirFecharCadastro}
+                    funcPost={this.postComunidade}
                     valido={this.state.valido}
                 >
+                    {this.state.carregando ?
+                        <div class="justify-content-center">
+                            <div class="spinner-border loader" role="status" />
+                        </div> :
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Comunidade</th>
+                                    <th scope="col">Pavilhão</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.comunidadesData.map((comunidade) => (
+                                    <tr key={comunidade.comCodigo}>
+                                        <td>{comunidade.comNome}</td>
+                                        <td><button className="btn btn-danger" onClick={() => this.desvincularUsuarioEmpresa(comunidade.uspCodigo)}><i className="fa fa-trash"></i></button></td>
+                                    </tr>
+                                ))}
+                                <tr>
+                                    <td className="col-md-6">
+                                        <div>
+                                            <select id="empresa" className="form-select" name="empCodigo" defaultValue={"Escolha uma Comunidade"} value={this.state.comunidade.comCodigo ?? 0} onChange={this.selecionarEmpresa}>
+                                                {this.state.comunidadesData.map((comunidade) => (
+                                                    <option key={comunidade.comCodigo} value={comunidade.comCodigo}>{comunidade.comNome}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td className="col-md-5">
+                                        <div>
+                                            {
+                                                this.state.comunidadesData.length < 1 ?
+                                                    <select className="form-select" disabled={true} defaultValue={"Escolha uma Pessoa"} />
+                                                    :
+                                                    <select id="pessoa" className="form-select" name="pesCodigo" disabled={this.state.comunidadesData.length < 1} defaultValue={"Escolha uma Pessoa"} value={this.state.comunidade.comCodigo} onChange={this.selecionarPessoa}>
+                                                        {this.state.comunidadesData.map((comunidade) => (
+                                                            <option key={comunidade.comCodigo} value={comunidade.comCodigo}>{comunidade.comNome}</option>
+                                                        ))}
+                                                    </select>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td className="col-md-2">
+                                        <div>
+                                            <button className="btn btn-success" disabled={this.state.comunidadesData.length < 1} onClick={() => this.preparaDadosPessoa()}><i className="fa fa-plus"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>}
                 </FormInserir>
                 <FormEditar
                     put={this.putEvento}

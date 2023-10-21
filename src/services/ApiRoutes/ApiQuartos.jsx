@@ -11,6 +11,16 @@ class ApiQuartos {
         return quartos;
     }
 
+    static getQuartoId = async (id) => {
+        let quarto = {};
+        await AxiosConnection.get("quarto/" + id).then((response) => {
+            quarto = response.data;
+        }).catch((error) => {
+            console.log(error);
+        })
+        return quarto;
+    }
+
     static postQuartos = async (quarto) => {
         let retorno = await AxiosConnection.post("quarto/", quarto);
         return retorno.status;

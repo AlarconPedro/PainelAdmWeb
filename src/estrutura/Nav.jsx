@@ -1,8 +1,9 @@
 import React from "react";
 
 import { FaBeer } from 'react-icons/fa';
-import { IoIosBed } from "react-icons/io";
+import { IoIosBed, IoIosPeople } from "react-icons/io";
 import { GiFamilyHouse } from "react-icons/gi"
+import { HiUserGroup } from "react-icons/hi";
 import {
     BsMegaphoneFill,
     BsFillBellFill,
@@ -41,7 +42,7 @@ export default props => {
                         <i><BsFillPeopleFill /></i> Pessoas
                     </Link>
                     <Link to={"/comunidade"}>
-                        <i><BsFillPeopleFill /></i> Comunidade
+                        <i><HiUserGroup /></i> Comunidade
                     </Link>
                 </nav>
                 :

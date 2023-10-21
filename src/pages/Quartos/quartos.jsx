@@ -11,6 +11,7 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 
 import FormAcesso from "../../forms/FormAcesso";
 import { Alert } from "reactstrap";
+import ApiBlocos from "../../services/ApiRoutes/ApiBlocos";
 
 class Quarto extends React.Component {
     constructor(props) {
@@ -24,12 +25,12 @@ class Quarto extends React.Component {
             valido: true,
             textoValido: "",
             quartoData: [],
+            blocoData: [],
             quartoInitialState: {
                 quaCodigo: 0,
                 quaNome: "",
                 bloCodigo: 0,
                 quaQtdcamas: 0,
-                bloCodigoNavigation: {},
                 tbEventoQuartos: [],
                 tbQuartoPessoas: []
             },
@@ -38,7 +39,6 @@ class Quarto extends React.Component {
                 quaNome: "",
                 bloCodigo: 0,
                 quaQtdcamas: 0,
-                bloCodigoNavigation: {},
                 tbEventoQuartos: [],
                 tbQuartoPessoas: []
             },
@@ -58,19 +58,24 @@ class Quarto extends React.Component {
     selecionaQuarto = async (quarto, tipo) => {
         this.setState({ quarto: quarto });
         if (tipo === "Editar") {
-            await this.getVendedorCodigo(quarto.quaCodigo);
+            // let retorno = await this.getQuartoById(quarto.quaCodigo);
+            // if (retorno === 200)
             this.setState({ abrirEditar: !this.state.abrirEditar });
+            this.getQuartos();
+
         } else if (tipo === "Excluir") {
             this.setState({ abrirExcluir: !this.state.abrirExcluir });
         }
     }
 
-    abrirFecharCadastro = () => {
+    abrirFecharCadastro = async () => {
+        await this.getBlocos();
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
         this.setState({ quarto: this.state.quartoInitialState });
         this.getQuartos();
     }
-    abrirFecharEditar = () => {
+    abrirFecharEditar = async () => {
+        await this.getBlocos();
         this.setState({ abrirEditar: !this.state.abrirEditar });
         this.setState({ quarto: this.state.quartoInitialState });
         this.getQuartos();
@@ -88,11 +93,40 @@ class Quarto extends React.Component {
         this.setState({ quartoData: quartos, carregando: false })
     }
 
+    getQuartoById = async (id) => {
+        this.setState({ carregando: true })
+        let quartoSelecionado = await ApiQuartos.getQuartoId(id);
+        if (quartoSelecionado !== null) {
+            this.setState({ quarto: quartoSelecionado, carregando: false })
+            return 200;
+        } else {
+            this.setState({ valido: false, textoValido: "Erro ao selecionar quarto", carregando: false });
+            return 400;
+        }
+    }
+
+    getBlocos = async () => {
+        this.setState({ carregando: true });
+        let blocos = await ApiBlocos.getBlocos();
+        this.setState({ blocoData: blocos, carregando: false });
+    }
+
     postQuartos = async () => {
         this.setState({ carregando: true });
         let retorno = await ApiQuartos.postQuartos(this.state.quarto);
         if (retorno === 200) {
-            this.setState({ carregando: false, quarto: quartoInitialState });
+            this.setState({ carregando: false, quarto: this.state.quartoInitialState });
+            this.abrirFecharCadastro();
+            this.getQuartos();
+        }
+    }
+
+    deleteQuarto = async () => {
+        this.setState({ carregando: true });
+        let retorno = await ApiQuartos.deleteQuarto(this.state.quarto.quaCodigo);
+        if (retorno === 200) {
+            this.setState({ carregando: false, quarto: this.state.quartoInitialState });
+            this.abrirFecharExcluir();
             this.getQuartos();
         }
     }
@@ -115,7 +149,7 @@ class Quarto extends React.Component {
                     carregando={this.state.carregando}
                     colunas={[
                         { nome: "Nome" },
-                        { nome: "Nome do Bloco" },
+                        { nome: "Bloco" },
                         { nome: "Qtd. Camas" },
                     ]}
                 >
@@ -123,7 +157,7 @@ class Quarto extends React.Component {
                         {this.state.quartoData.map((quarto) => (
                             <tr key={quarto.quaCodigo}>
                                 <td className="pt-3">{quarto.quaNome}</td>
-                                <td className="pt-3">{quarto.bloCodigo}</td>
+                                <td className="pt-3">{quarto.bloco}</td>
                                 <td className="pt-3">{quarto.quaQtdcamas}</td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionaQuarto(quarto, "Editar")}>
@@ -141,39 +175,24 @@ class Quarto extends React.Component {
                     nome={"Quarto"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
-                    funcPost={this.prepararDados}
+                    funcPost={this.postQuartos}
                 >
                     <form className="row g-3 form-group">
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <label htmlFor="nome" className="form-label">Nome</label>
-                            <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.pessoa.pesNome} onChange={this.changeCadastro} />
+                            <input type="text" className="form-control" id="nome" name="quaNome" value={this.state.quarto.quaNome} onChange={this.handleChange} />
                         </div>
                         <div className="col-md-4">
-                            <label htmlFor="email" className="form-label">Email</label>
-                            <input type="email" className="form-control" id="email" name="pesEmail" value={this.state.pessoa.pesEmail} onChange={this.changeCadastro} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="telefone" className="form-label">Telefone</label>
-                            <input type="text" className="form-control" id="telefone" name="pesFone" value={this.state.pessoa.pesFone} onChange={this.changeCadastro} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="celular" className="form-label">Celular</label>
-                            <input type="text" className="form-control" id="celular" name="pesCelular" value={this.state.pessoa.pesCelular} onChange={this.changeCadastro} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="cpf" className="form-label">CPF</label>
-                            <input type="text" className="form-control" id="cpf" name="pesCgccpf" value={this.state.pessoa.pesCgccpf} onChange={this.changeCadastro} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="comissao" className="form-label">Comissão %</label>
-                            <input type="number" className="form-control" id="comissao" name="pesComissao" value={this.state.pessoa.pesComissao} onChange={this.changeCadastro} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="status" className="form-label">Status</label>
-                            <select id="status" className="form-select" name="pesStatus" value={this.state.pessoa.pesStatus} onChange={this.changeCadastro}>
-                                <option value={true}>Ativo</option>
-                                <option value={false}>Inativo</option>
+                            <label htmlFor="bloco" className="form-label">Bloco</label>
+                            <select id="bloco" className="form-select" name="bloCodigo" value={this.state.quarto.bloCodigo} onChange={this.handleChange}>
+                                {this.state.blocoData.map((bloco) => (
+                                    <option value={bloco.bloCodigo}>{bloco.bloNome}</option>
+                                ))}
                             </select>
+                        </div>
+                        <div className="col-md-2">
+                            <label htmlFor="number" className="form-label">Qtd. Camas</label>
+                            <input type="number" className="form-control" id="qtdCamas" name="quaQtdcamas" value={this.state.quarto.quaQtdcamas} onChange={this.handleChange} />
                         </div>
                     </form>
                 </FormInserir>
@@ -184,36 +203,21 @@ class Quarto extends React.Component {
                     funcPut={this.prepararDados}
                 >
                     <form className="row g-3 form-group">
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <label htmlFor="nome" className="form-label">Nome</label>
-                            <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.vendedor.pesNome} onChange={this.handleChange} />
+                            <input type="text" className="form-control" id="nome" name="quaNome" value={this.state.quarto.quaNome} onChange={this.handleChange} />
                         </div>
                         <div className="col-md-4">
-                            <label htmlFor="email" className="form-label">Email</label>
-                            <input type="email" className="form-control" id="email" name="pesEmail" value={this.state.vendedor.pesEmail} onChange={this.handleChange} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="telefone" className="form-label">Telefone</label>
-                            <input type="text" className="form-control" id="telefone" name="pesFone" value={this.state.vendedor.pesFone} onChange={this.handleChange} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="celular" className="form-label">Celular</label>
-                            <input type="text" className="form-control" id="celular" name="pesCelular" value={this.state.vendedor.pesCelular} onChange={this.handleChange} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="cpf" className="form-label">CPF</label>
-                            <input type="text" className="form-control" id="cpf" name="pesCgccpf" value={this.state.vendedor.pesCgccpf} onChange={this.handleChange} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="comissao" className="form-label">Comissão %</label>
-                            <input type="number" className="form-control" id="comissao" name="pesComissao" value={this.state.vendedor.pesComissao} onChange={this.handleChange} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="status" className="form-label">Status</label>
-                            <select id="status" className="form-select" name="pesStatus" value={this.state.vendedor.pesStatus} onChange={this.handleChange}>
-                                <option value={true}>Ativo</option>
-                                <option value={false}>Inativo</option>
+                            <label htmlFor="bloco" className="form-label">Bloco</label>
+                            <select id="bloco" className="form-select" name="bloCodigo" value={this.state.quarto.bloCodigo} onChange={this.handleChange}>
+                                {this.state.blocoData.map((bloco) => (
+                                    <option value={bloco.bloCodigo}>{bloco.bloNome}</option>
+                                ))}
                             </select>
+                        </div>
+                        <div className="col-md-2">
+                            <label htmlFor="number" className="form-label">Qtd. Camas</label>
+                            <input type="number" className="form-control" id="qtdCamas" name="quaQtdcamas" value={this.state.quarto.quaQtdcamas} onChange={this.handleChange} />
                         </div>
                     </form>
                 </FormEditar>

@@ -66,6 +66,8 @@ class Eventos extends React.Component {
                         { nome: "Nome" },
                         { nome: "Data Início" },
                         { nome: "Data Fim" },
+                        { nome: "Quartos" },
+                        { nome: "Participantes" },
                     ]}
                 >
                     <tbody>

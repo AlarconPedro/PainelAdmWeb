@@ -49,6 +49,11 @@ class Pessoas extends React.Component {
         this.setState({ pessoa: { ...this.state.pessoa, [name]: value } });
     }
 
+    handleCheck = (event) => {
+        const { name, checked } = event.target;
+        this.setState({ pessoa: { ...this.state.pessoa, [name]: checked ? "S" : "N" } });
+    }
+
     abrirFecharCadastro = async () => {
         await this.getComunidades();
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
@@ -166,13 +171,13 @@ class Pessoas extends React.Component {
                                 <td className="pt-3">{pessoa.pesGenero}</td>
                                 <td className="pt-3">{pessoa.comunidade}</td>
                                 <td className="pt-3">
-                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesResponsavel == "S" ? true : false} />
+                                    <input className="form-check-input" type="checkbox" id="pesResponsavel" value="pesResponsavel" checked={pessoa.pesResponsavel === "S" ? true : false} />
                                 </td>
                                 <td className="pt-3">
-                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesCatequista == "S" ? true : false} />
+                                    <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" checked={pessoa.pesCatequista === "S" ? true : false} />
                                 </td>
                                 <td className="pt-3">
-                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesSalmista == "S" ? true : false} />
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesSalmista === "S" ? true : false} />
                                 </td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarPessoa(pessoa, "Editar")}>
@@ -215,15 +220,15 @@ class Pessoas extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="pesResponsavel" value="pesResponsavel" onChange={this.handleChange} />
+                                    <input className="form-check-input" type="checkbox" id="pesResponsavel" value="pesResponsavel" name="pesResponsavel" onChange={this.handleCheck} />
                                     <label className="form-check-label ml-2" for="pesResponsavel">Responsável</label>
                                 </div>
                                 <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" onChange={this.handleChange} />
+                                    <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" name="pesCatequista" onChange={this.handleCheck} />
                                     <label className="form-check-label" for="pesCatequista">Catequista</label>
                                 </div>
                                 <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" onChange={this.handleChange} />
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" name="pesSalmista" onChange={this.handleCheck} />
                                     <label className="form-check-label" for="pesSalmista">Salmista</label>
                                 </div>
                             </div>

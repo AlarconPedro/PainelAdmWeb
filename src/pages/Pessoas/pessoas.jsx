@@ -22,12 +22,18 @@ class Pessoas extends React.Component {
                 pesNome: "",
                 pesGenero: "",
                 comCodigo: 0,
+                pesResponsavel: "N",
+                pesCatequista: "N",
+                pesSalmista: "N",
             },
             pessoa: {
                 pesCodigo: 0,
                 pesNome: "",
                 pesGenero: "M",
                 comCodigo: 0,
+                pesResponsavel: "N",
+                pesCatequista: "N",
+                pesSalmista: "N",
             },
             comunidade: {
                 comCodigo: 0,
@@ -148,6 +154,9 @@ class Pessoas extends React.Component {
                         { nome: "Nome" },
                         { nome: "Gênero" },
                         { nome: "Comunidade" },
+                        { nome: "Responsável" },
+                        { nome: "Catequista" },
+                        { nome: "Salmista" },
                     ]}
                 >
                     <tbody>
@@ -156,6 +165,15 @@ class Pessoas extends React.Component {
                                 <td className="pt-3">{pessoa.pesNome}</td>
                                 <td className="pt-3">{pessoa.pesGenero}</td>
                                 <td className="pt-3">{pessoa.comunidade}</td>
+                                <td className="pt-3">
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesResponsavel == "S" ? true : false} />
+                                </td>
+                                <td className="pt-3">
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesCatequista == "S" ? true : false} />
+                                </td>
+                                <td className="pt-3">
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" checked={pessoa.pesSalmista == "S" ? true : false} />
+                                </td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarPessoa(pessoa, "Editar")}>
                                         <i className="fa fa-pencil"></i>
@@ -176,7 +194,7 @@ class Pessoas extends React.Component {
                 >
                     {this.state.valido ?
                         <form className="row g-3 form-group">
-                            <div className="col-md-7">
+                            <div className="col-md-5">
                                 <label htmlFor="nome" className="form-label">Nome</label>
                                 <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
                             </div>
@@ -194,6 +212,20 @@ class Pessoas extends React.Component {
                                     <option value={"M"}>Masculino</option>
                                     <option value={"F"}>Feminino</option>
                                 </select>
+                            </div>
+                            <div className="col-md-9">
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesResponsavel" value="pesResponsavel" onChange={this.handleChange} />
+                                    <label className="form-check-label ml-2" for="pesResponsavel">Responsável</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" onChange={this.handleChange} />
+                                    <label className="form-check-label" for="pesCatequista">Catequista</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" onChange={this.handleChange} />
+                                    <label className="form-check-label" for="pesSalmista">Salmista</label>
+                                </div>
                             </div>
                         </form>
                         :
@@ -213,7 +245,7 @@ class Pessoas extends React.Component {
                 >
                     {this.state.valido ?
                         <form className="row g-3 form-group">
-                            <div className="col-md-7">
+                            <div className="col-md-5">
                                 <label htmlFor="nome" className="form-label">Nome</label>
                                 <input type="text" className="form-control" id="nome" name="pesNome" value={this.state.pessoa.pesNome} onChange={this.handleChange} />
                             </div>
@@ -232,6 +264,20 @@ class Pessoas extends React.Component {
                                     <option value={"F"}>Feminino</option>
                                 </select>
                             </div>
+                            <div className="col-md-9">
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesResponsavel" value="pesResponsavel" onChange={this.handleChange} />
+                                    <label className="form-check-label ml-2" for="pesResponsavel">Responsável</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" onChange={this.handleChange} />
+                                    <label className="form-check-label" for="pesCatequista">Catequista</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" onChange={this.handleChange} />
+                                    <label className="form-check-label" for="pesSalmista">Salmista</label>
+                                </div>
+                            </div>
                         </form>
                         :
                         <form className="row g-3 form-group">
@@ -249,7 +295,7 @@ class Pessoas extends React.Component {
                     funcDelete={this.deletePessoa}
                     dados={this.state.pessoa.pesNome}
                 />
-            </React.Fragment>
+            </React.Fragment >
         );
     }
 }

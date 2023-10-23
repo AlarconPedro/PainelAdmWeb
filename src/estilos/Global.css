@@ -4,13 +4,13 @@
 
     --logo-height: 100px;
     --header-height: 80px;
-    --menu-top-height : 70px;
+    --menu-top-height: 70px;
     --aside-width: 225px;
     --footer-height: 40px;
 
     --shadow:
-        0 2px 23px 0 rgba(0,0,0,0.1),
-        0 2px 49px 0 rgba(0,0,0,0.06);
+        0 2px 23px 0 rgba(0, 0, 0, 0.1),
+        0 2px 49px 0 rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -46,7 +46,7 @@ header.header {
     grid-area: header;
 }
 
-aside.menu-lateral{
+aside.menu-lateral {
     grid-area: menu;
 }
 
@@ -57,6 +57,7 @@ main.content {
 footer.footer {
     grid-area: footer;
 }
+
 /* TODO - Animação loader */
 .loader {
     width: 40px;
@@ -110,7 +111,7 @@ footer.footer {
             "logo"
             "menu"
             "content"
-            "footer"; 
+            "footer";
     }
 }
 

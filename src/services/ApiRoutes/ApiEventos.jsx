@@ -23,8 +23,14 @@ class ApiEventos {
         return evento;
     }
 
-    static postEvento(evento) {
-        return AxiosConnection.post(this.url, evento);
+    static postEvento = async (evento) => {
+        let retorno;
+        await AxiosConnection.post(this.url, evento).then((response) => {
+            retorno = response.status;
+        }).catch((error) => {
+            console.log(error)
+        });
+        return retorno
     }
 
     static putEvento(evento) {

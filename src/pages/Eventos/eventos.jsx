@@ -36,9 +36,18 @@ class Eventos extends React.Component {
         }
     }
 
-    atualizaCampoDataInicio = () => { }
+    atualizaCampoDataInicio = e => {
+        this.setState({ evento: { ...this.state.evento, eveDataInicio: e } });
+    }
 
-    atualizaCampoDataFim = () => { }
+    atualizaCampoDataFim = e => {
+        this.setState({ evento: { ...this.state.evento, eveDataFim: e } })
+    }
+
+    handleChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ evento: { ...this.state.evento, [name]: value } });
+    }
 
     abrirFecharCadastro = () => {
         this.setState({ abrirCadastro: !this.state.abrirCadastro });
@@ -56,8 +65,11 @@ class Eventos extends React.Component {
     }
 
     postEvento = async (evento) => {
-        await apiEvento.postEvento(evento);
-        this.abrirFecharCadastro();
+        let retorno;
+        retorno = await apiEvento.postEvento(this.state.evento);
+        if (retorno === 200) {
+            this.abrirFecharCadastro();
+        }
     }
 
     componentDidMount() {
@@ -111,7 +123,7 @@ class Eventos extends React.Component {
                     nome={"Comunidades"}
                     abrir={this.state.abrirCadastro}
                     funcAbrir={this.abrirFecharCadastro}
-                    funcPost={this.postComunidade}
+                    funcPost={this.postEvento}
                     valido={this.state.valido}
                 >
                     {this.state.carregando ?
@@ -122,15 +134,17 @@ class Eventos extends React.Component {
                             <form className="row g-3 form-group">
                                 <div className="col-md-6">
                                     <label htmlFor="nome" className="form-label mb-0">Nome</label>
-                                    <input type="text" className="form-control" id="nome" name="bloNome" value={this.state.evento.eveNome} onChange={this.handleChange} />
+                                    <input type="text" className="form-control" id="nome" name="eveNome" value={this.state.evento.eveNome} onChange={this.handleChange} />
                                 </div>
                                 <div className="col-md-3">
                                     <label className="form-label mb-0">Data Início:</label>
                                     <DatePicker
+                                        calendarContainer={""}
                                         className="form-control"
                                         name="eveDataInicio"
                                         selected={new Date(this.state.evento.eveDataInicio)}
                                         onChange={date => this.atualizaCampoDataInicio(date)}
+                                        // showTimeSelect={true}
                                         dateFormat={"dd/MM/yyyy"}
                                         timeFormat="yyyy-MM-dd"
                                         customInput={

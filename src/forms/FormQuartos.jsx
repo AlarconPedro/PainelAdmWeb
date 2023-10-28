@@ -26,6 +26,9 @@ class FormQuartos extends React.Component {
         if (prevProps.textoValido !== this.props.textoValido) {
             this.setState({ textoValido: this.props.textoValido });
         }
+        if (prevProps.vazio !== this.props.vazio) {
+            this.setState({ vazio: this.props.vazio });
+        }
     }
 
     fecharModal() {
@@ -48,7 +51,7 @@ class FormQuartos extends React.Component {
                     {this.props.children}
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-success" type="submit" onClick={() => this.salvar()}>Salvar</button>{" "}
+                    <button className="btn btn-success" type="submit" onClick={() => this.salvar()} disabled={this.props.vazio}>Salvar</button>{" "}
                     <button className="btn btn-danger" onClick={() => this.fecharModal()}>Cancelar</button>
                 </ModalFooter>
             </Modal>

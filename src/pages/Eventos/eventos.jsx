@@ -56,6 +56,7 @@ class Eventos extends React.Component {
             abrirQuartos: false,
             carregando: true,
             valido: true,
+            vazio: false,
         }
     }
 
@@ -131,7 +132,25 @@ class Eventos extends React.Component {
         this.atualizaDadosListBox(quartos);
     }
 
-    salvarQuarto = async () => { }
+    salvarQuarto = async () => {
+        this.setState({ carregando: true });
+        let quartoLista = [];
+        this.state.selected.forEach(element => {
+            quartoLista.push({
+                evqCodigo: 0,
+                quaCodigo: element,
+                eveCodigo: this.state.evento.eveCodigo,
+                eveCodigoNavigation: {},
+                quaCodigoNavigation: {}
+            });
+        });
+        let retorno;
+        retorno = await apiEvento.postQuartos(quartoLista);
+        if (retorno === 200) {
+            this.abrirFecharQuartos();
+        }
+        this.setState({ carregando: false });
+    }
 
     postEvento = async (evento) => {
         this.setState({ carregando: true });
@@ -184,6 +203,7 @@ class Eventos extends React.Component {
 
     selecionarPavilhao = async (pavilhao) => {
         const { value } = pavilhao.target;
+        this.setState({ pavilhao: value });
         await this.getQuartosByPavilhao(value);
     }
 
@@ -382,12 +402,13 @@ class Eventos extends React.Component {
                     funcAbrir={this.abrirFecharQuartos}
                     funcSalvar={this.salvarQuarto}
                     valido={this.state.valido}
+                    vazio={this.state.selected.length === 0}
                 >
                     <form className="row g-3 form-group">
                         <div className="col-md-6">
                             <label htmlFor="status" className="form-label mb-0">Pavilhão</label>
-                            <select id="status" className="form-select" name="eveNome" value={this.state.evento.eveNome} onChange={this.selecionarPavilhao}>
-                                <option value="">Selecione</option>
+                            <select id="status" className="form-select" name="eveNome" value={this.state.pavilhao.bloNome} onChange={this.selecionarPavilhao}>
+                                <option value="">Selecione um Pavilhão</option>
                                 {this.state.pavilhoesData.map((pavilhao) => (
                                     <option key={pavilhao.bloCodigo} value={pavilhao.bloCodigo} onClick={() => this.selecionarPavilhao(pavilhao)}>{pavilhao.bloNome}</option>
                                 ))}

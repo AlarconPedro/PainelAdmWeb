@@ -63,6 +63,16 @@ class ApiEventos {
         return retorno
     }
 
+    static postQuartos = async (quartos) => {
+        let retorno;
+        await AxiosConnection.post("evento/quartos", quartos).then((response) => {
+            retorno = response.status;
+        }).catch((error) => {
+            console.log(error)
+        });
+        return retorno
+    }
+
     static putEvento(evento) {
         return AxiosConnection.put(this.url + "/" + evento.id, evento);
     }

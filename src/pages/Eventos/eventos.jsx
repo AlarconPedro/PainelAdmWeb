@@ -400,7 +400,7 @@ class Eventos extends React.Component {
                                 </div>
                                 :
                                 <DualListBox
-                                    options={this.state.eventoQuartos}
+                                    options={this.state.options}
                                     selected={this.state.selected}
                                     onChange={(value) => this.setState({ selected: value })}
                                 />

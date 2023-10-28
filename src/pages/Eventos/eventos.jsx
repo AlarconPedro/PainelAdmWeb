@@ -11,6 +11,8 @@ import InputMask from "react-input-mask";
 
 import { apiEvento } from "../../services/Api";
 
+import ConverteData from "../../classes/Funcoes/ConverteData";
+
 class Eventos extends React.Component {
     constructor(props) {
         super(props);
@@ -105,8 +107,8 @@ class Eventos extends React.Component {
                         {this.state.eventosData.map((evento) => (
                             <tr key={evento.eveCodigo}>
                                 <td className="pt-3">{evento.eveNome}</td>
-                                <td className="pt-3">{evento.eveDatainicio}</td>
-                                <td className="pt-3">{evento.eveDatafim}</td>
+                                <td className="pt-3">{ConverteData(evento.eveDatainicio)}</td>
+                                <td className="pt-3">{ConverteData(evento.eveDatafim)}</td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarUsuario(evento, "Editar")}>
                                         <i className="fa fa-pencil"></i>
@@ -158,10 +160,12 @@ class Eventos extends React.Component {
                                 <div className="col-md-3">
                                     <label className="form-label mb-0">Data Fim:</label>
                                     <DatePicker
+                                        calendarContainer={""}
                                         className="form-control"
                                         name="eveDataFim"
                                         selected={new Date(this.state.evento.eveDataFim)}
                                         onChange={date => this.atualizaCampoDataFim(date)}
+                                        // showTimeSelect={true}
                                         dateFormat={"dd/MM/yyyy"}
                                         timeFormat="yyyy-MM-dd"
                                         customInput={

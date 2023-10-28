@@ -25,7 +25,7 @@ class ApiEventos {
 
     static postEvento = async (evento) => {
         let retorno;
-        await AxiosConnection.post(this.url, evento).then((response) => {
+        await AxiosConnection.post("evento/", evento).then((response) => {
             retorno = response.status;
         }).catch((error) => {
             console.log(error)
@@ -38,7 +38,13 @@ class ApiEventos {
     }
 
     static deleteEvento(id) {
-        return AxiosConnection.delete(this.url + "/" + id);
+        let retorno;
+        return AxiosConnection.delete(`evento/${id}`).then((response) => {
+            retorno = response.status;
+            return retorno;
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 }
 

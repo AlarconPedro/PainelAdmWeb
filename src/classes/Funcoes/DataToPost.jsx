@@ -12,6 +12,6 @@ export default function DataToPost(data) {
         mes = '0' + mes;
     }
 
-    let formatada = [ano, mes, dia].join('/');
+    let formatada = [ano, mes, dia].join('-');
     return formatada;
 }

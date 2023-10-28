@@ -25,7 +25,7 @@ class ApiEventos {
 
     static getPavilhoes = async () => {
         let pavilhoes = [];
-        await AxiosConnection.get("pavilhao/").then((response) => {
+        await AxiosConnection.get("evento/pavilhoes").then((response) => {
             pavilhoes = response.data;
         }).catch((error) => {
             console.log(error);
@@ -35,7 +35,7 @@ class ApiEventos {
 
     static getQuartosPavilhao = async (id) => {
         let quartos = [];
-        await AxiosConnection.get(`quartos/${id}`).then((response) => {
+        await AxiosConnection.get(`evento/quartos/${id}`).then((response) => {
             quartos = response.data;
         }).catch((error) => {
             console.log(error);

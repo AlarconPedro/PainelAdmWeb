@@ -67,6 +67,14 @@ class Eventos extends React.Component {
         this.setState({ evento: { ...this.state.evento, eveDataFim: e } })
     }
 
+    atualizaDadosListBox = (quartoLista) => {
+        let quartos = [];
+        quartoLista.forEach(element => {
+            quartos.push({ value: element.quaCodigo, label: element.quaNome });
+        });
+        this.setState({ options: quartos });
+    }
+
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ evento: { ...this.state.evento, [name]: value } });
@@ -92,28 +100,35 @@ class Eventos extends React.Component {
     }
 
     getEventos = async () => {
+        this.setState({ carregando: true });
         let eventos = await apiEvento.getEventos();
         this.setState({ eventosData: eventos, carregando: false });
     }
 
     getEventoId = async (id) => {
+        this.setState({ carregando: true });
         let evento = await apiEvento.getEvento(id);
         this.setState({ evento: evento, carregando: false });
     }
 
     getPavilhoes = async () => {
+        this.setState({ carregando: true });
         let pavilhoes = await apiEvento.getPavilhoes();
         this.setState({ pavilhoesData: pavilhoes, carregando: false });
     }
 
     getComunidades = async () => {
+        this.setState({ carregando: true });
         let comunidades = await apiEvento.getComunidades();
         this.setState({ comunidadesData: comunidades, carregando: false });
     }
 
-    getQuartosByPavilhao = async () => {
-        let quartos = await apiEvento.getQuartosPavilhao(this.state.pavilhao.bloCodigo);
+    getQuartosByPavilhao = async (id) => {
+        this.setState({ carregando: true });
+        let quartos = await apiEvento.getQuartosPavilhao(id);
+        console.log(quartos);
         this.setState({ eventoQuartos: quartos, carregando: false });
+        this.atualizaDadosListBox(quartos);
     }
 
     salvarQuarto = async () => { }
@@ -162,8 +177,14 @@ class Eventos extends React.Component {
         } else if (acao === "Excluir") {
             this.abrirFecharExcluir();
         } else if (acao === "Quartos") {
+            await this.getPavilhoes();
             this.abrirFecharQuartos();
         }
+    }
+
+    selecionarPavilhao = async (pavilhao) => {
+        const { value } = pavilhao.target;
+        await this.getQuartosByPavilhao(value);
     }
 
     render() {
@@ -365,9 +386,11 @@ class Eventos extends React.Component {
                     <form className="row g-3 form-group">
                         <div className="col-md-6">
                             <label htmlFor="status" className="form-label mb-0">Pavilhão</label>
-                            <select id="status" className="form-select" name="eveNome" value={this.state.evento.eveNome} onChange={this.handleChange}>
-                                <option value={"M"}>Masculino</option>
-                                <option value={"F"}>Feminino</option>
+                            <select id="status" className="form-select" name="eveNome" value={this.state.evento.eveNome} onChange={this.selecionarPavilhao}>
+                                <option value="">Selecione</option>
+                                {this.state.pavilhoesData.map((pavilhao) => (
+                                    <option key={pavilhao.bloCodigo} value={pavilhao.bloCodigo} onClick={() => this.selecionarPavilhao(pavilhao)}>{pavilhao.bloNome}</option>
+                                ))}
                             </select>
                         </div>
                         {
@@ -377,7 +400,7 @@ class Eventos extends React.Component {
                                 </div>
                                 :
                                 <DualListBox
-                                    options={this.state.options}
+                                    options={this.state.eventoQuartos}
                                     selected={this.state.selected}
                                     onChange={(value) => this.setState({ selected: value })}
                                 />

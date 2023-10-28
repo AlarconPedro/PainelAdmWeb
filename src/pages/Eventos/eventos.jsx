@@ -16,13 +16,24 @@ import { FaBed } from "react-icons/fa";
 
 import ConverteData from "../../classes/Funcoes/ConverteData";
 import DataToPost from "../../classes/Funcoes/DataToPost";
+import FormQuartos from "../../forms/FormQuartos";
+
+import DualListBox from 'react-dual-listbox';
+import 'react-dual-listbox/lib/react-dual-listbox.css';
 
 class Eventos extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             eventosData: [],
+            eventoQuartos: [],
+            pavilhoesData: [],
             comunidadesData: [],
+            selected: [],
+            options: [
+                // { value: 'one', label: 'Option One' },
+                // { value: 'two', label: 'Option Two' },
+            ],
             eventoInitialState: {
                 eveCodigo: 0,
                 eveNome: "",
@@ -37,10 +48,12 @@ class Eventos extends React.Component {
                 eveDatafim: new Date("01/02/2023"),
                 tbEventoQuartos: [],
             },
+            pavilhao: {},
             comunidade: {},
             abrirCadastro: false,
             abrirEditar: false,
             abrirExcluir: false,
+            abrirQuartos: false,
             carregando: true,
             valido: true,
         }
@@ -74,6 +87,10 @@ class Eventos extends React.Component {
         this.getEventos();
     }
 
+    abrirFecharQuartos = () => {
+        this.setState({ abrirQuartos: !this.state.abrirQuartos });
+    }
+
     getEventos = async () => {
         let eventos = await apiEvento.getEventos();
         this.setState({ eventosData: eventos, carregando: false });
@@ -83,6 +100,23 @@ class Eventos extends React.Component {
         let evento = await apiEvento.getEvento(id);
         this.setState({ evento: evento, carregando: false });
     }
+
+    getPavilhoes = async () => {
+        let pavilhoes = await apiEvento.getPavilhoes();
+        this.setState({ pavilhoesData: pavilhoes, carregando: false });
+    }
+
+    getComunidades = async () => {
+        let comunidades = await apiEvento.getComunidades();
+        this.setState({ comunidadesData: comunidades, carregando: false });
+    }
+
+    getQuartosByPavilhao = async () => {
+        let quartos = await apiEvento.getQuartosPavilhao(this.state.pavilhao.bloCodigo);
+        this.setState({ eventoQuartos: quartos, carregando: false });
+    }
+
+    salvarQuarto = async () => { }
 
     postEvento = async (evento) => {
         this.setState({ carregando: true });
@@ -127,6 +161,8 @@ class Eventos extends React.Component {
             this.abrirFecharEditar();
         } else if (acao === "Excluir") {
             this.abrirFecharExcluir();
+        } else if (acao === "Quartos") {
+            this.abrirFecharQuartos();
         }
     }
 
@@ -150,8 +186,8 @@ class Eventos extends React.Component {
                         { nome: "Data Início" },
                         { nome: "Data Fim" },
                         { nome: "Quartos" },
-                        { nome: "Participantes" },
-                        { nome: "Distribuir Quartos" },
+                        { nome: "Hóspedes" },
+                        { nome: "Alocar Hóspedes" },
                     ]}
                 >
                     <tbody>
@@ -161,13 +197,13 @@ class Eventos extends React.Component {
                                 <td className="pt-3">{ConverteData(evento.eveDatainicio)}</td>
                                 <td className="pt-3">{ConverteData(evento.eveDatafim)}</td>
                                 <td>
-                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Acesso")}><FaBed /></td>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Quartos")}><FaBed /></td>
                                 </td>
                                 <td>
-                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Empresas")}><BsPeopleFill /></td>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Hospedes")}><BsPeopleFill /></td>
                                 </td>
                                 <td>
-                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Empresas")}><BsHouseFill /></td>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Distribuir")}><BsHouseFill /></td>
                                 </td>
                                 <td>
                                     <button className="btn btn-warning" onClick={() => this.selecionarEvento(evento, "Editar")}>
@@ -319,6 +355,35 @@ class Eventos extends React.Component {
                     funcDelete={this.deleteEvento}
                     valido={this.state.valido}
                 />
+                <FormQuartos
+                    nome={"Quartos"}
+                    abrir={this.state.abrirQuartos}
+                    funcAbrir={this.abrirFecharQuartos}
+                    funcSalvar={this.salvarQuarto}
+                    valido={this.state.valido}
+                >
+                    <form className="row g-3 form-group">
+                        <div className="col-md-6">
+                            <label htmlFor="status" className="form-label mb-0">Pavilhão</label>
+                            <select id="status" className="form-select" name="eveNome" value={this.state.evento.eveNome} onChange={this.handleChange}>
+                                <option value={"M"}>Masculino</option>
+                                <option value={"F"}>Feminino</option>
+                            </select>
+                        </div>
+                        {
+                            this.state.carregando ?
+                                <div class="justify-content-center">
+                                    <div class="spinner-border loader" role="status" />
+                                </div>
+                                :
+                                <DualListBox
+                                    options={this.state.options}
+                                    selected={this.state.selected}
+                                    onChange={(value) => this.setState({ selected: value })}
+                                />
+                        }
+                    </form>
+                </FormQuartos>
             </React.Fragment>
         );
     }

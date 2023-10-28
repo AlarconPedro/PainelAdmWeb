@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import "../estilos/FormularioInserir.css";
-
-class FormInserir extends React.Component {
+class FormQuartos extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,8 +33,8 @@ class FormInserir extends React.Component {
         this.props.funcAbrir(this.state.abrir);
     }
 
-    async inserir() {
-        var retorno = await this.props.funcPost("P");
+    async salvar() {
+        var retorno = await this.props.funcSalvar("P");
         if (retorno) {
             this.fecharModal();
         }
@@ -50,12 +48,13 @@ class FormInserir extends React.Component {
                     {this.props.children}
                 </ModalBody>
                 <ModalFooter>
-                    <button className="btn btn-success" type="submit" onClick={() => this.inserir()}>Salvar</button>{" "}
+                    <button className="btn btn-success" type="submit" onClick={() => this.salvar()}>Salvar</button>{" "}
                     <button className="btn btn-danger" onClick={() => this.fecharModal()}>Cancelar</button>
                 </ModalFooter>
             </Modal>
         );
     }
+
 }
 
-export default FormInserir;
+export default FormQuartos;

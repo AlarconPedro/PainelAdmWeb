@@ -23,6 +23,36 @@ class ApiEventos {
         return evento;
     }
 
+    static getPavilhoes = async () => {
+        let pavilhoes = [];
+        await AxiosConnection.get("pavilhao/").then((response) => {
+            pavilhoes = response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
+        return pavilhoes;
+    }
+
+    static getQuartosPavilhao = async (id) => {
+        let quartos = [];
+        await AxiosConnection.get(`quartos/${id}`).then((response) => {
+            quartos = response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
+        return quartos;
+    }
+
+    static getComunidades = async () => {
+        let comunidades = [];
+        await AxiosConnection.get("comunidade/").then((response) => {
+            comunidades = response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
+        return comunidades;
+    }
+
     static postEvento = async (evento) => {
         let retorno;
         await AxiosConnection.post("evento", evento).then((response) => {

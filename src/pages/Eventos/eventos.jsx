@@ -11,7 +11,11 @@ import InputMask from "react-input-mask";
 
 import { apiEvento } from "../../services/Api";
 
+import { BsHouseFill, BsPeopleFill } from "react-icons/bs"
+import { FaBed } from "react-icons/fa";
+
 import ConverteData from "../../classes/Funcoes/ConverteData";
+import DataToPost from "../../classes/Funcoes/DataToPost";
 
 class Eventos extends React.Component {
     constructor(props) {
@@ -22,17 +26,19 @@ class Eventos extends React.Component {
             eventoInitialState: {
                 eveCodigo: 0,
                 eveNome: "",
-                eveDataInicio: new Date("01/01/2023"),
-                eveDataFim: new Date("01/02/2023"),
+                eveDatainicio: new Date("01/01/2023"),
+                eveDatafim: new Date("01/02/2023"),
             },
             evento: {
                 eveCodigo: 0,
                 eveNome: "",
-                eveDataInicio: new Date("01/01/2023"),
-                eveDataFim: new Date("01/02/2023"),
+                eveDatainicio: new Date("01/01/2023"),
+                eveDatafim: new Date("01/02/2023"),
             },
             comunidade: {},
             abrirCadastro: false,
+            abrirEditar: false,
+            abrirExcluir: false,
             carregando: true,
             valido: true,
         }
@@ -52,7 +58,17 @@ class Eventos extends React.Component {
     }
 
     abrirFecharCadastro = () => {
-        this.setState({ abrirCadastro: !this.state.abrirCadastro });
+        this.setState({ abrirCadastro: !this.state.abrirCadastro, evento: this.state.eventoInitialState });
+        this.getEventos();
+    }
+
+    abrirFecharEditar = () => {
+        this.setState({ abrirEditar: !this.state.abrirEditar });
+        this.getEventos();
+    }
+
+    abrirFecharExcluir = () => {
+        this.setState({ abrirExcluir: !this.state.abrirExcluir });
         this.getEventos();
     }
 
@@ -67,16 +83,49 @@ class Eventos extends React.Component {
     }
 
     postEvento = async (evento) => {
+        this.setState({ carregando: true });
         let retorno;
+        this.state.evento.eveDatainicio = DataToPost(this.state.evento.eveDatainicio);
+        this.state.evento.eveDatafim = DataToPost(this.state.evento.eveDatafim);
         retorno = await apiEvento.postEvento(this.state.evento);
         if (retorno === 200) {
             this.abrirFecharCadastro();
         }
+        this.setState({ carregando: false });
+    }
+
+    putEvento = async (evento) => {
+        this.setState({ carregando: true });
+        let retorno;
+        retorno = await apiEvento.putEvento(this.state.evento);
+        if (retorno === 200) {
+            this.abrirFecharEditar();
+        }
+        this.setState({ carregando: false });
+    }
+
+    deleteEvento = async () => {
+        this.setState({ carregando: true });
+        let retorno;
+        retorno = await apiEvento.deleteEvento(this.state.evento.eveCodigo);
+        if (retorno === 200) {
+            this.abrirFecharExcluir();
+        }
+        this.setState({ carregando: false });
     }
 
     componentDidMount() {
         this.setState({ carregando: true });
         this.getEventos();
+    }
+
+    selecionarEvento = async (evento, acao) => {
+        this.setState({ evento: evento })
+        if (acao === "Editar") {
+            this.abrirFecharEditar();
+        } else if (acao === "Excluir") {
+            this.abrirFecharExcluir();
+        }
     }
 
     render() {
@@ -110,10 +159,19 @@ class Eventos extends React.Component {
                                 <td className="pt-3">{ConverteData(evento.eveDatainicio)}</td>
                                 <td className="pt-3">{ConverteData(evento.eveDatafim)}</td>
                                 <td>
-                                    <button className="btn btn-warning" onClick={() => this.selecionarUsuario(evento, "Editar")}>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Acesso")}><FaBed /></td>
+                                </td>
+                                <td>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Empresas")}><BsPeopleFill /></td>
+                                </td>
+                                <td>
+                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Empresas")}><BsHouseFill /></td>
+                                </td>
+                                <td>
+                                    <button className="btn btn-warning" onClick={() => this.selecionarEvento(evento, "Editar")}>
                                         <i className="fa fa-pencil"></i>
                                     </button>{" "}
-                                    <button className="btn btn-danger" onClick={() => this.selecionarUsuario(evento, "Excluir")}>
+                                    <button className="btn btn-danger" onClick={() => this.selecionarEvento(evento, "Excluir")}>
                                         <i className="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -144,9 +202,8 @@ class Eventos extends React.Component {
                                         calendarContainer={""}
                                         className="form-control"
                                         name="eveDataInicio"
-                                        selected={new Date(this.state.evento.eveDataInicio)}
+                                        selected={new Date(this.state.evento.eveDatainicio)}
                                         onChange={date => this.atualizaCampoDataInicio(date)}
-                                        // showTimeSelect={true}
                                         dateFormat={"dd/MM/yyyy"}
                                         timeFormat="yyyy-MM-dd"
                                         customInput={
@@ -163,7 +220,7 @@ class Eventos extends React.Component {
                                         calendarContainer={""}
                                         className="form-control"
                                         name="eveDataFim"
-                                        selected={new Date(this.state.evento.eveDataFim)}
+                                        selected={new Date(this.state.evento.eveDatafim)}
                                         onChange={date => this.atualizaCampoDataFim(date)}
                                         // showTimeSelect={true}
                                         dateFormat={"dd/MM/yyyy"}
@@ -185,63 +242,81 @@ class Eventos extends React.Component {
                                     </div>
                                 </div>
                             </form>
-                        // <table class="table">
-                        //     <thead>
-                        //         <tr>
-                        //             <th scope="col">Comunidade</th>
-                        //             <th scope="col">Pavilhão</th>
-                        //             <th scope="col">Ações</th>
-                        //         </tr>
-                        //     </thead>
-                        //     <tbody>
-                        //         {this.state.comunidadesData.map((comunidade) => (
-                        //             <tr key={comunidade.comCodigo}>
-                        //                 <td>{comunidade.comNome}</td>
-                        //                 <td><button className="btn btn-danger" onClick={() => this.desvincularUsuarioEmpresa(comunidade.uspCodigo)}><i className="fa fa-trash"></i></button></td>
-                        //             </tr>
-                        //         ))}
-                        //         <tr>
-                        //             <td className="col-md-6">
-                        //                 <div>
-                        //                     <select id="empresa" className="form-select" name="empCodigo" defaultValue={"Escolha uma Comunidade"} value={this.state.comunidade.comCodigo ?? 0} onChange={this.selecionarEmpresa}>
-                        //                         {this.state.comunidadesData.map((comunidade) => (
-                        //                             <option key={comunidade.comCodigo} value={comunidade.comCodigo}>{comunidade.comNome}</option>
-                        //                         ))}
-                        //                     </select>
-                        //                 </div>
-                        //             </td>
-                        //             <td className="col-md-5">
-                        //                 <div>
-                        //                     {
-                        //                         this.state.comunidadesData.length < 1 ?
-                        //                             <select className="form-select" disabled={true} defaultValue={"Escolha uma Pessoa"} />
-                        //                             :
-                        //                             <select id="pessoa" className="form-select" name="pesCodigo" disabled={this.state.comunidadesData.length < 1} defaultValue={"Escolha uma Pessoa"} value={this.state.comunidade.comCodigo} onChange={this.selecionarPessoa}>
-                        //                                 {this.state.comunidadesData.map((comunidade) => (
-                        //                                     <option key={comunidade.comCodigo} value={comunidade.comCodigo}>{comunidade.comNome}</option>
-                        //                                 ))}
-                        //                             </select>
-                        //                     }
-                        //                 </div>
-                        //             </td>
-                        //             <td className="col-md-2">
-                        //                 <div>
-                        //                     <button className="btn btn-success" disabled={this.state.comunidadesData.length < 1} onClick={() => this.preparaDadosPessoa()}><i className="fa fa-plus"></i></button>
-                        //                 </div>
-                        //             </td>
-                        //         </tr>
-                        //     </tbody>
-                        // </table>
                     }
                 </FormInserir>
                 <FormEditar
-                    put={this.putEvento}
-                    abrirFecharCadastro={this.abrirFecharCadastro}
-                    carregando={this.state.carregando}
+                    nome={"Comunidades"}
+                    abrir={this.state.abrirEditar}
+                    funcAbrir={this.abrirFecharEditar}
+                    funcPut={this.putEvento}
                     valido={this.state.valido}
-                    evento={this.state.evento}
                 >
+                    {this.state.carregando ?
+                        <div class="justify-content-center">
+                            <div class="spinner-border loader" role="status" />
+                        </div> :
+                        this.state.valido ?
+                            <form className="row g-3 form-group">
+                                <div className="col-md-6">
+                                    <label htmlFor="nome" className="form-label mb-0">Nome</label>
+                                    <input type="text" className="form-control" id="nome" name="eveNome" value={this.state.evento.eveNome} onChange={this.handleChange} />
+                                </div>
+                                <div className="col-md-3">
+                                    <label className="form-label mb-0">Data Início:</label>
+                                    <DatePicker
+                                        calendarContainer={""}
+                                        className="form-control"
+                                        name="eveDataInicio"
+                                        selected={new Date(this.state.evento.eveDatainicio)}
+                                        onChange={date => this.atualizaCampoDataInicio(date)}
+                                        dateFormat={"dd/MM/yyyy"}
+                                        timeFormat="yyyy-MM-dd"
+                                        customInput={
+                                            <InputMask
+                                                type="text"
+                                                mask="99/99/9999"
+                                            />
+                                        }
+                                    />
+                                </div>
+                                <div className="col-md-3">
+                                    <label className="form-label mb-0">Data Fim:</label>
+                                    <DatePicker
+                                        calendarContainer={""}
+                                        className="form-control"
+                                        name="eveDataFim"
+                                        selected={new Date(this.state.evento.eveDatafim)}
+                                        onChange={date => this.atualizaCampoDataFim(date)}
+                                        // showTimeSelect={true}
+                                        dateFormat={"dd/MM/yyyy"}
+                                        timeFormat="yyyy-MM-dd"
+                                        customInput={
+                                            <InputMask
+                                                type="text"
+                                                mask="99/99/9999"
+                                            />
+                                        }
+                                    />
+                                </div>
+                            </form>
+                            :
+                            <form className="row g-3 form-group">
+                                <div className="alert alert-danger d-flex align-items-center h-25" role="alert">
+                                    <div>
+                                        <i className="fa fa-exclamation-triangle"> {this.state.textoValido}</i>
+                                    </div>
+                                </div>
+                            </form>
+                    }
                 </FormEditar>
+                <FormExcluir
+                    nome={"Comunidades"}
+                    dados={this.state.evento.eveNome}
+                    abrir={this.state.abrirExcluir}
+                    funcAbrir={this.abrirFecharExcluir}
+                    funcDelete={this.deleteEvento}
+                    valido={this.state.valido}
+                />
             </React.Fragment>
         );
     }

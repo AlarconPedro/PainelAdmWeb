@@ -132,6 +132,13 @@ class Eventos extends React.Component {
         this.atualizaDadosListBox(quartos);
     }
 
+    getQuartosAlocados = async (codigoPavilhao, codigoEvento) => {
+        this.setState({ carregando: true });
+        let quartos = await apiEvento.getQuartosAlocados(codigoPavilhao, codigoEvento);
+        this.setState({ eventoQuartos: quartos, carregando: false, selected: quartos });
+        // this.atualizaDadosListBox(quartos);
+    }
+
     salvarQuarto = async () => {
         this.setState({ carregando: true });
         let quartoLista = [];
@@ -203,6 +210,7 @@ class Eventos extends React.Component {
         const { value } = pavilhao.target;
         this.setState({ pavilhao: value });
         await this.getQuartosByPavilhao(value);
+        await this.getQuartosAlocados(this.state.pavilhao, this.state.evento.eveCodigo);
     }
 
     render() {

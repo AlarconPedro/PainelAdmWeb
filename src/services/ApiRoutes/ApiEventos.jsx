@@ -43,6 +43,16 @@ class ApiEventos {
         return quartos;
     }
 
+    static getQuartosAlocados = async (codigoPavilhao, codigoEvento) => {
+        let quartos = [];
+        await AxiosConnection.get(`evento/quartos/alocados/${codigoPavilhao}/${codigoEvento}`).then((response) => {
+            quartos = response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
+        return quartos;
+    }
+
     static getComunidades = async () => {
         let comunidades = [];
         await AxiosConnection.get("comunidade/").then((response) => {

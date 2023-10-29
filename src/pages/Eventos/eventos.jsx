@@ -140,8 +140,6 @@ class Eventos extends React.Component {
                 evqCodigo: 0,
                 quaCodigo: element,
                 eveCodigo: this.state.evento.eveCodigo,
-                eveCodigoNavigation: {},
-                quaCodigoNavigation: {}
             });
         });
         let retorno;
@@ -408,7 +406,7 @@ class Eventos extends React.Component {
                         <div className="col-md-6">
                             <label htmlFor="status" className="form-label mb-0">Pavilhão</label>
                             <select id="status" className="form-select" name="eveNome" value={this.state.pavilhao.bloNome} onChange={this.selecionarPavilhao}>
-                                <option value="">Selecione um Pavilhão</option>
+                                <option value="">Selecione</option>
                                 {this.state.pavilhoesData.map((pavilhao) => (
                                     <option key={pavilhao.bloCodigo} value={pavilhao.bloCodigo} onClick={() => this.selecionarPavilhao(pavilhao)}>{pavilhao.bloNome}</option>
                                 ))}
@@ -420,11 +418,22 @@ class Eventos extends React.Component {
                                     <div class="spinner-border loader" role="status" />
                                 </div>
                                 :
-                                <DualListBox
-                                    options={this.state.options}
-                                    selected={this.state.selected}
-                                    onChange={(value) => this.setState({ selected: value })}
-                                />
+                                <div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="status" className="form-label mb-0">Disponível</label>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="status" className="form-label mb-0">Alocados</label>
+                                        </div>
+                                    </div>
+                                    <DualListBox
+                                        options={this.state.options}
+                                        selected={this.state.selected}
+                                        onChange={(value) => this.setState({ selected: value })}
+                                    />
+                                </div>
+
                         }
                     </form>
                 </FormQuartos>

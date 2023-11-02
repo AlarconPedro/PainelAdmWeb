@@ -107,6 +107,7 @@ class Eventos extends React.Component {
 
     abrirFecharQuartos = () => {
         this.setState({ abrirQuartos: !this.state.abrirQuartos });
+        this.getEventos();
     }
 
     getEventos = async () => {
@@ -420,7 +421,7 @@ class Eventos extends React.Component {
                 >
                     <form className="row g-3 form-group">
                         <div className="col-md-6">
-                            <label htmlFor="status" className="form-label mb-0">Pavilhão</label>
+                            <label htmlFor="status" className="form-label mb-0">Bloco</label>
                             <select id="status" className="form-select" name="eveNome" value={this.state.pavilhao.bloNome} onChange={this.selecionarPavilhao}>
                                 <option value="">Selecione</option>
                                 {this.state.pavilhoesData.map((pavilhao) => (

@@ -20,6 +20,7 @@ import FormQuartos from "../../forms/FormQuartos";
 
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 class Eventos extends React.Component {
     constructor(props) {
@@ -76,6 +77,14 @@ class Eventos extends React.Component {
         this.setState({ options: quartos });
     }
 
+    atualizaQuartosAlocados = (quartoLista) => {
+        let quartos = [];
+        quartoLista.forEach(element => {
+            quartos.push(element.quaCodigo);
+        });
+        this.setState({ selected: quartos });
+    }
+
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ evento: { ...this.state.evento, [name]: value } });
@@ -127,16 +136,15 @@ class Eventos extends React.Component {
     getQuartosByPavilhao = async (id) => {
         this.setState({ carregando: true });
         let quartos = await apiEvento.getQuartosPavilhao(id);
-        console.log(quartos);
-        this.setState({ eventoQuartos: quartos, carregando: false });
+        this.setState({ carregando: false });
         this.atualizaDadosListBox(quartos);
     }
 
     getQuartosAlocados = async (codigoPavilhao, codigoEvento) => {
         this.setState({ carregando: true });
         let quartos = await apiEvento.getQuartosAlocados(codigoPavilhao, codigoEvento);
-        this.setState({ eventoQuartos: quartos, carregando: false, selected: quartos });
-        // this.atualizaDadosListBox(quartos);
+        this.setState({ carregando: false });
+        this.atualizaQuartosAlocados(quartos);
     }
 
     salvarQuarto = async () => {

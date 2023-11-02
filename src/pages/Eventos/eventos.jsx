@@ -159,7 +159,7 @@ class Eventos extends React.Component {
             });
         });
         let retorno;
-        retorno = await apiEvento.postQuartos(quartoLista);
+        retorno = await apiEvento.postQuartos(quartoLista, this.state.pavilhao);
         if (retorno === 200) {
             this.abrirFecharQuartos();
         }

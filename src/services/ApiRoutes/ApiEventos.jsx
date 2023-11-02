@@ -73,9 +73,9 @@ class ApiEventos {
         return retorno
     }
 
-    static postQuartos = async (quartos) => {
+    static postQuartos = async (quartos, codigoBloco) => {
         let retorno;
-        await AxiosConnection.post("evento/quartos", quartos).then((response) => {
+        await AxiosConnection.post(`evento/quartos/${codigoBloco}`, quartos).then((response) => {
             retorno = response.status;
         }).catch((error) => {
             console.log(error)

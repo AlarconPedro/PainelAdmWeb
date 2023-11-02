@@ -79,7 +79,7 @@ class Eventos extends React.Component {
         quartoLista.forEach(element => {
             quartos.push({ value: element.quaCodigo, label: element.quaNome });
         });
-        this.setState({ options: quartos });
+        this.setState({ optionsQuartos: quartos });
     }
 
     atualizaQuartosAlocados = (quartoLista) => {
@@ -87,7 +87,7 @@ class Eventos extends React.Component {
         quartoLista.forEach(element => {
             quartos.push(element.quaCodigo);
         });
-        this.setState({ selected: quartos });
+        this.setState({ selectedQuartos: quartos });
     }
 
     atualizaDadosListBoxPessoas = (pessoasLista) => {

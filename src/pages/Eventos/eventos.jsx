@@ -5,6 +5,8 @@ import FormModel from "../../forms/Modelo"
 import FormInserir from "../../forms/FormInserir"
 import FormEditar from "../../forms/FormEditar"
 import FormExcluir from "../../forms/FormExcluir"
+import FormQuartos from "../../forms/FormQuartos";
+import FormPessoas from "../../forms/FormPessoas";
 
 import DatePicker from "react-datepicker";
 import InputMask from "react-input-mask";
@@ -16,7 +18,6 @@ import { FaBed } from "react-icons/fa";
 
 import ConverteData from "../../classes/Funcoes/ConverteData";
 import DataToPost from "../../classes/Funcoes/DataToPost";
-import FormQuartos from "../../forms/FormQuartos";
 
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
@@ -28,13 +29,16 @@ class Eventos extends React.Component {
         this.state = {
             eventosData: [],
             eventoQuartos: [],
+            pessoasEvento: [],
             pavilhoesData: [],
             comunidadesData: [],
-            selected: [],
-            options: [
+            selectedQuartos: [],
+            selectedPessoas: [],
+            optionsQuartos: [
                 // { value: 'one', label: 'Option One' },
                 // { value: 'two', label: 'Option Two' },
             ],
+            optionsPessoas: [],
             eventoInitialState: {
                 eveCodigo: 0,
                 eveNome: "",
@@ -55,6 +59,7 @@ class Eventos extends React.Component {
             abrirEditar: false,
             abrirExcluir: false,
             abrirQuartos: false,
+            abrirPessoas: false,
             carregando: true,
             valido: true,
             vazio: false,
@@ -85,6 +90,14 @@ class Eventos extends React.Component {
         this.setState({ selected: quartos });
     }
 
+    atualizaDadosListBoxPessoas = (pessoasLista) => {
+        let pessoas = [];
+        pessoasLista.forEach(element => {
+            pessoas.push({ value: element.pesCodigo, label: element.pesNome });
+        });
+        this.setState({ optionsPessoas: pessoas });
+    }
+
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ evento: { ...this.state.evento, [name]: value } });
@@ -107,6 +120,11 @@ class Eventos extends React.Component {
 
     abrirFecharQuartos = () => {
         this.setState({ abrirQuartos: !this.state.abrirQuartos });
+        this.getEventos();
+    }
+
+    abrirFecharPessoas = () => {
+        this.setState({ abrirPessoas: !this.state.abrirPessoas });
         this.getEventos();
     }
 
@@ -148,10 +166,16 @@ class Eventos extends React.Component {
         this.atualizaQuartosAlocados(quartos);
     }
 
+    getPessoasEvento = async (codigoComunidade) => {
+        this.setState({ carregando: true });
+        let pessoas = await apiEvento.getPessoasEvento(codigoComunidade);
+        this.setState({ pessoasEvento: pessoas, carregando: false });
+    }
+
     salvarQuarto = async () => {
         this.setState({ carregando: true });
         let quartoLista = [];
-        this.state.selected.forEach(element => {
+        this.state.selectedQuartos.forEach(element => {
             quartoLista.push({
                 evqCodigo: 0,
                 quaCodigo: element,
@@ -164,6 +188,10 @@ class Eventos extends React.Component {
             this.abrirFecharQuartos();
         }
         this.setState({ carregando: false });
+    }
+
+    salvarPessoas = async () => {
+
     }
 
     postEvento = async (evento) => {
@@ -212,6 +240,9 @@ class Eventos extends React.Component {
         } else if (acao === "Quartos") {
             await this.getPavilhoes();
             this.abrirFecharQuartos();
+        } else if (acao === "Hospedes") {
+            await this.getComunidades();
+            this.abrirFecharPessoas();
         }
     }
 
@@ -220,6 +251,13 @@ class Eventos extends React.Component {
         this.setState({ pavilhao: value });
         await this.getQuartosByPavilhao(value);
         await this.getQuartosAlocados(this.state.pavilhao, this.state.evento.eveCodigo);
+    }
+
+    selecionarComunidade = async (comunidade) => {
+        const { value } = comunidade.target;
+        this.setState({ comunidade: value });
+        await this.getPessoasEvento(value);
+        this.atualizaDadosListBoxPessoas(this.state.pessoasEvento);
     }
 
     render() {
@@ -417,7 +455,7 @@ class Eventos extends React.Component {
                     funcAbrir={this.abrirFecharQuartos}
                     funcSalvar={this.salvarQuarto}
                     valido={this.state.valido}
-                    vazio={this.state.selected.length === 0}
+                    vazio={this.state.selectedQuartos.length === 0}
                 >
                     <form className="row g-3 form-group">
                         <div className="col-md-6">
@@ -445,15 +483,58 @@ class Eventos extends React.Component {
                                         </div>
                                     </div>
                                     <DualListBox
-                                        options={this.state.options}
-                                        selected={this.state.selected}
-                                        onChange={(value) => this.setState({ selected: value })}
+                                        options={this.state.optionsQuartos}
+                                        selected={this.state.selectedQuartos}
+                                        onChange={(value) => this.setState({ selectedQuartos: value })}
                                     />
                                 </div>
 
                         }
                     </form>
                 </FormQuartos>
+                <FormPessoas
+                    nome={"Pessoas"}
+                    abrir={this.state.abrirPessoas}
+                    funcAbrir={this.abrirFecharPessoas}
+                    funcSalvar={this.salvarPessoas}
+                    valido={this.state.valido}
+                    vazio={this.state.selectedPessoas.length === 0}
+                >
+                    <form className="row g-3 form-group">
+                        <div className="col-md-6">
+                            <label htmlFor="status" className="form-label mb-0">Comunidade</label>
+                            <select id="status" className="form-select" name="eveNome" value={this.state.comunidade.comNome} onChange={this.selecionarComunidade}>
+                                <option value="">Selecione</option>
+                                {this.state.comunidadesData.map((comunidade) => (
+                                    <option key={comunidade.comCodigo} value={comunidade.comCodigo} onClick={() => this.selecionarComunidade(comunidade)}>{comunidade.comNome}</option>
+                                ))}
+                            </select>
+                        </div>
+                        {
+                            this.state.carregando ?
+                                <div class="justify-content-center">
+                                    <div class="spinner-border loader" role="status" />
+                                </div>
+                                :
+                                <div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="status" className="form-label mb-0">Disponível</label>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="status" className="form-label mb-0">Alocados</label>
+                                        </div>
+                                    </div>
+                                    <DualListBox
+                                        options={this.state.optionsPessoas}
+                                        selected={this.state.selectedPessoas}
+                                        onChange={(value) => this.setState({ selectedPessoas: value })}
+                                    />
+                                </div>
+
+                        }
+                    </form>
+                </FormPessoas>
             </React.Fragment>
         );
     }

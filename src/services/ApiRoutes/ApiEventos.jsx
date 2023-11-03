@@ -93,6 +93,16 @@ class ApiEventos {
         return retorno
     }
 
+    static postPessoas = async (pessoas, codigoEvento) => {
+        let retorno;
+        await AxiosConnection.post(`evento/pessoas/${codigoEvento}`, pessoas).then((response) => {
+            retorno = response.status;
+        }).catch((error) => {
+            console.log(error)
+        });
+        return retorno
+    }
+
     static putEvento(evento) {
         return AxiosConnection.put(this.url + "/" + evento.id, evento);
     }

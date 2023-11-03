@@ -191,7 +191,21 @@ class Eventos extends React.Component {
     }
 
     salvarPessoas = async () => {
-
+        this.setState({ carregando: true });
+        let pessoaLista = [];
+        this.state.selectedPessoas.forEach(element => {
+            pessoaLista.push({
+                evpCodigo: 0,
+                pesCodigo: element,
+                eveCodigo: this.state.evento.eveCodigo,
+            });
+        });
+        let retorno;
+        retorno = await apiEvento.postPessoas(pessoaLista, this.state.comunidade);
+        if (retorno === 200) {
+            this.abrirFecharPessoas();
+        }
+        this.setState({ carregando: false });
     }
 
     postEvento = async (evento) => {

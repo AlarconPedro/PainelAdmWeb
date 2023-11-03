@@ -8,6 +8,8 @@ import FormExcluir from "../../forms/FormExcluir"
 import ApiPessoas from "../../services/ApiRoutes/ApiPessoas";
 import ApiComunidade from "../../services/ApiRoutes/ApiComunidade";
 
+import AlertDialogDemo from "../../componentes/Alert/AlertDialog";
+
 class Pessoas extends React.Component {
     constructor(props) {
         super(props);
@@ -15,6 +17,7 @@ class Pessoas extends React.Component {
             abrirCadastro: false,
             carregando: true,
             valido: true,
+            abrirDialog: false,
             pessoasData: [],
             comunidadeData: [],
             pessoaInitialState: {
@@ -104,7 +107,7 @@ class Pessoas extends React.Component {
         let retorno;
         this.setState({ carregando: true });
         retorno = await ApiPessoas.postPessoa(this.state.pessoa);
-        if (retorno == 200) {
+        if (retorno === 200) {
             this.setState({ valido: true });
             this.setState({ pessoa: this.state.pessoaInitialState });
             this.abrirFecharCadastro();
@@ -125,11 +128,15 @@ class Pessoas extends React.Component {
         let retorno;
         this.setState({ carregando: true });
         retorno = await ApiPessoas.deletePessoa(this.state.pessoa.pesCodigo);
-        if (retorno == 200) {
+        if (retorno === 200) {
             this.setState({ valido: true });
             this.setState({ pessoa: this.state.pessoaInitialState });
             this.abrirFecharExcluir();
-        } else {
+        } else if (retorno === 400) {
+            this.setState({ valido: false, textoValido: "Pessoa não pode ser excluída, pois está vinculada a uma turma !" });
+            this.setState({ abrirDialog: true });
+        }
+        else {
             this.setState({ valido: false, textoValido: "Erro ao excluir Pessoa !" });
         }
         this.setState({ carregando: false });
@@ -300,6 +307,7 @@ class Pessoas extends React.Component {
                     funcDelete={this.deletePessoa}
                     dados={this.state.pessoa.pesNome}
                 />
+                <AlertDialogDemo abrir={this.state.abrirDialog} />
             </React.Fragment >
         );
     }

@@ -98,6 +98,14 @@ class Eventos extends React.Component {
         this.setState({ optionsPessoas: pessoas });
     }
 
+    atualizaPessoasAlocadas = (pessoasLista) => {
+        let pessoas = [];
+        pessoasLista.forEach(element => {
+            pessoas.push(element.pesCodigo);
+        });
+        this.setState({ selectedPessoas: pessoas });
+    }
+
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ evento: { ...this.state.evento, [name]: value } });
@@ -159,6 +167,13 @@ class Eventos extends React.Component {
         this.atualizaDadosListBox(quartos);
     }
 
+    getPessoasEvento = async (codigoComunidade) => {
+        this.setState({ carregando: true });
+        let pessoas = await apiEvento.getPessoasEvento(codigoComunidade);
+        this.setState({ carregando: false });
+        this.atualizaDadosListBoxPessoas(pessoas);
+    }
+
     getQuartosAlocados = async (codigoPavilhao, codigoEvento) => {
         this.setState({ carregando: true });
         let quartos = await apiEvento.getQuartosAlocados(codigoPavilhao, codigoEvento);
@@ -166,10 +181,12 @@ class Eventos extends React.Component {
         this.atualizaQuartosAlocados(quartos);
     }
 
-    getPessoasEvento = async (codigoComunidade) => {
+    getPessoasAlocadas = async (codigoComunidade, codigoEvento) => {
         this.setState({ carregando: true });
-        let pessoas = await apiEvento.getPessoasEvento(codigoComunidade);
-        this.setState({ pessoasEvento: pessoas, carregando: false });
+        let pessoas = await apiEvento.getPessoasAlocadas(codigoComunidade, codigoEvento);
+        this.setState({ carregando: false });
+        this.atualizaPessoasAlocadas(pessoas);
+
     }
 
     salvarQuarto = async () => {
@@ -271,7 +288,7 @@ class Eventos extends React.Component {
         const { value } = comunidade.target;
         this.setState({ comunidade: value });
         await this.getPessoasEvento(value);
-        this.atualizaDadosListBoxPessoas(this.state.pessoasEvento);
+        await this.getPessoasAlocadas(this.state.comunidade, this.state.evento.eveCodigo);
     }
 
     render() {

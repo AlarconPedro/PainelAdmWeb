@@ -59,7 +59,7 @@ class Modelo extends React.Component {
                     <hr />
                     <Busca buscar={this.props.getByNome} />
                     <br />
-                    {this.state.carregando ?
+                    {this.props.carregando ?
                         <div className="spinner-border loader" role="status" />
                         :
                         <table className="table table-striped">

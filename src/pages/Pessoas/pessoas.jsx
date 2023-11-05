@@ -73,6 +73,11 @@ class Pessoas extends React.Component {
         this.getPessoas();
     }
 
+    abrirFecharDialog = () => {
+        this.setState({ abrirDialog: !this.state.abrirDialog });
+        this.getPessoas();
+    }
+
     selecionarPessoa = (pessoa, operacao) => {
         this.setState({ pessoa: pessoa });
         if (operacao === "Editar") {
@@ -127,17 +132,17 @@ class Pessoas extends React.Component {
     deletePessoa = async () => {
         let retorno;
         this.setState({ carregando: true });
-        retorno = await ApiPessoas.deletePessoa(this.state.pessoa.pesCodigo);
-        if (retorno === 200) {
-            this.setState({ valido: true });
-            this.setState({ pessoa: this.state.pessoaInitialState });
-            this.abrirFecharExcluir();
-        } else if (retorno === 400) {
+        try {
+            retorno = await ApiPessoas.deletePessoa(this.state.pessoa.pesCodigo);
+            if (retorno === 200) {
+                this.setState({ valido: true });
+                this.setState({ pessoa: this.state.pessoaInitialState });
+                this.abrirFecharExcluir();
+            }
+        } catch {
             this.setState({ valido: false, textoValido: "Pessoa não pode ser excluída, pois está vinculada a uma turma !" });
             this.setState({ abrirDialog: true });
-        }
-        else {
-            this.setState({ valido: false, textoValido: "Erro ao excluir Pessoa !" });
+            this.abrirFecharExcluir();
         }
         this.setState({ carregando: false });
     }
@@ -307,7 +312,12 @@ class Pessoas extends React.Component {
                     funcDelete={this.deletePessoa}
                     dados={this.state.pessoa.pesNome}
                 />
-                <AlertDialogDemo abrir={this.state.abrirDialog} />
+                <AlertDialogDemo
+                    abrir={this.state.abrirDialog}
+                    acaoBotao={this.abrirFecharDialog}
+                    titulo={"Erro ao excluir Pessoa"}
+                    descricao={"Pessoa não pode ser excluída, pois está vinculada a um Evento !"}
+                />
             </React.Fragment >
         );
     }

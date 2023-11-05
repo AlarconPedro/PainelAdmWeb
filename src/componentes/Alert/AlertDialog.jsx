@@ -5,23 +5,21 @@ import './styles.css';
 const AlertDialogDemo = (props) => (
     <AlertDialog.Root open={props.abrir}>
         <AlertDialog.Trigger asChild>
-            <button className="Button violet">Delete account</button>
+            <button className="Button violet" onClick={() => props.acaoBotao()}>{props.botao}</button>
         </AlertDialog.Trigger>
         <AlertDialog.Portal>
             <AlertDialog.Overlay className="AlertDialogOverlay" />
             <AlertDialog.Content className="AlertDialogContent">
-                <AlertDialog.Title className="AlertDialogTitle">Are you absolutely sure?</AlertDialog.Title>
-                <AlertDialog.Description className="AlertDialogDescription">
-                    This action cannot be undone. This will permanently delete your account and remove your
-                    data from our servers.
+                <AlertDialog.Title className="AlertDialogTitle">{props.titulo}</AlertDialog.Title>
+                <AlertDialog.Description className="AlertDialogDescription">{props.descricao}
                 </AlertDialog.Description>
                 <div style={{ display: 'flex', gap: 25, justifyContent: 'flex-end' }}>
                     <AlertDialog.Cancel asChild>
-                        <button className="Button mauve">Cancel</button>
+                        <button className="btn btn-danger">Cancelar</button>
                     </AlertDialog.Cancel>
-                    <AlertDialog.Action asChild>
-                        <button className="Button red">Yes, delete account</button>
-                    </AlertDialog.Action>
+                    {/* <AlertDialog.Action asChild>
+                        <button className="btn btn-danger">Yes, delete account</button>
+                    </AlertDialog.Action> */}
                 </div>
             </AlertDialog.Content>
         </AlertDialog.Portal>

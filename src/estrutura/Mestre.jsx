@@ -7,7 +7,6 @@ import useIdle from '../hooks/useIdle';
 
 import Session from '../routes/Session';
 
-
 export default props => {
 
     const logout = () => {

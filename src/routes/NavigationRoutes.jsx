@@ -8,6 +8,7 @@ import Eventos from '../pages/Eventos/eventos';
 import Usuarios from '../pages/Usuarios/usuarios'
 import Pessoas from '../pages/Pessoas/pessoas'
 import Comunidade from '../pages/Comunidade/comunidade';
+import DistribuirQuartos from '../pages/DistribuirQuartos/distribuir_quartos';
 
 export default nav => {
     return (
@@ -18,6 +19,7 @@ export default nav => {
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/pessoas" element={<Pessoas />} />
             <Route path="/comunidade" element={<Comunidade />} />
+            <Route path="/distribuir" element={<DistribuirQuartos />} />
             {localStorage.getItem("Admin") === "true" ?
                 <Route path="/usuarios" element={<Usuarios />} />
                 : null}

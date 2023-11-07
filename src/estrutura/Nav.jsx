@@ -4,6 +4,7 @@ import { FaBeer } from 'react-icons/fa';
 import { IoIosBed, IoIosPeople } from "react-icons/io";
 import { GiFamilyHouse } from "react-icons/gi"
 import { HiUserGroup } from "react-icons/hi";
+import { ImAddressBook } from "react-icons/im";
 import {
     BsMegaphoneFill,
     BsFillBellFill,
@@ -43,6 +44,9 @@ export default props => {
                     </Link>
                     <Link to={"/comunidade"}>
                         <i><HiUserGroup /></i> Comunidade
+                    </Link>
+                    <Link to={"/distribuir"}>
+                        <i><ImAddressBook /></i> Alocação
                     </Link>
                 </nav>
                 :

@@ -10,14 +10,8 @@ class DistribuirQuartos extends React.Component {
         this.state = {
             abrir: false,
             carregando: false,
-            optionsQuartos: [],
-            selectedQuartos: [],
-            optionsPessoas: [],
-            selectedPessoas: [],
-            optionsComunidades: [],
-            selectedComunidades: [],
-            optionsEventos: [],
-            selectedEventos: [],
+            pessoasComunidade: [],
+            pessoasQuarto: [],
         }
     }
 
@@ -49,13 +43,13 @@ class DistribuirQuartos extends React.Component {
                             </select>
                         </div>
                         <div className="col-md-5">
-                            <label htmlFor="comunidade" className="form-label">Comunidade</label>
+                            <label htmlFor="comunidade" className="form-label">Bloco</label>
                             <select id="comunidade" className="form-select" name="comCodigo" value="1" onChange={this.handleChange}>
 
                             </select>
                         </div>
                         <div className="col-md-5">
-                            <label htmlFor="comunidade" className="form-label">Bloco</label>
+                            <label htmlFor="comunidade" className="form-label">Comunidade</label>
                             <select id="comunidade" className="form-select" name="comCodigo" value="1" onChange={this.handleChange}>
 
                             </select>
@@ -75,8 +69,8 @@ class DistribuirQuartos extends React.Component {
                         :
                         <div className="flex-column">
                             <DualListBox
-                                options={this.state.optionsQuartos}
-                                selected={this.state.selectedQuartos}
+                                options={this.state.pessoasComunidade}
+                                selected={this.state.pessoasQuarto}
                                 onChange={(value) => this.setState({ selectedQuartos: value })}
                             />
                         </div>

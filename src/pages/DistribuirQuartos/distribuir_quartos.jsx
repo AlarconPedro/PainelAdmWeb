@@ -26,13 +26,20 @@ class DistribuirQuartos extends React.Component {
         this.props.funcAbrirCadastro(this.state.abrir);
     }
 
+    buscarEventos = () => { }
+
+    buscarBlocos = () => { }
+
+    buscarComunidades = () => { }
+
+    buscarQuartos = () => { }
+
     render() {
         return (
             <Mestre icon="address-book" title="Distribuição de Quartos" subtitle="CCMZ">
                 <div className={this.props.tipoContainer}>
                     <header>
                         <h3>Alocar Quartos</h3>
-                        {/* <button className="btn btn-success btn-adicionar" onClick={() => this.abrirFecharCadastro()}><strong>+</strong>{this.state.BotaoAdd}</button>*/}
                     </header>
                     <hr />
                     <div className="row col-md-12 d-flex justify-content-around">

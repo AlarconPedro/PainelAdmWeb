@@ -3,7 +3,7 @@ import AxiosConnection from "../AxiosConnection";
 class ApiAlocacao {
     static getEventos = async () => {
         let eventosData = [];
-        await AxiosConnection.get("eventos").then((response) => {
+        await AxiosConnection.get("alocacao/eventos").then((response) => {
             eventosData = response.data;
         }).catch((error) => {
             console.log(error);
@@ -13,7 +13,7 @@ class ApiAlocacao {
 
     static getQuartos = async (id) => {
         let quartosData = [];
-        await AxiosConnection.get("quartos/" + id).then((response) => {
+        await AxiosConnection.get("alocacao/quartos/" + id).then((response) => {
             quartosData = response.data;
         }).catch((error) => {
             console.log(error);
@@ -23,7 +23,7 @@ class ApiAlocacao {
 
     static getBlocos = async (id) => {
         let blocosData = [];
-        await AxiosConnection.get("blocos/" + id).then((response) => {
+        await AxiosConnection.get("alocacao/blocos/" + id).then((response) => {
             blocosData = response.data;
         }).catch((error) => {
             console.log(error);
@@ -33,7 +33,7 @@ class ApiAlocacao {
 
     static getComunidades = async (id) => {
         let comunidadesData = [];
-        await AxiosConnection.get("comunidades/" + id).then((response) => {
+        await AxiosConnection.get("alocacao/comunidades/" + id).then((response) => {
             comunidadesData = response.data;
         }).catch((error) => {
             console.log(error);

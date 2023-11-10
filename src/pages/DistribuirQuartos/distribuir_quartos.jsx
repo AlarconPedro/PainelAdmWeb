@@ -18,39 +18,14 @@ class DistribuirQuartos extends React.Component {
             blocos: [],
             comunidades: [],
             quartos: [],
-            quartoSelecionado: {},
-            comunidadeInitialState: {
-                comCodigo: 0,
-                comNome: "",
-                comCidade: "",
-                comUF: "",
-            },
-            comunidadeSelecionada: {
-                comCodigo: 0,
-                comNome: "",
-                comCidade: "",
-                comUF: "",
-            },
-            eventoInitialState: {
-                eveCodigo: 0,
-                eveNome: "",
-                eveDataInicio: "",
-                eveDataFim: "",
-            },
-            eventoSelecionado: {
-                eveCodigo: 0,
-                eveNome: "",
-                eveDataInicio: "",
-                eveDataFim: "",
-            },
-            blocoInitialState: {
-                bloCodigo: 0,
-                bloNome: "",
-            },
-            blocoSelecionado: {
-                bloCodigo: 0,
-                bloNome: "",
-            },
+            quartoInitialState: 0,
+            quartoSelecionado: 0,
+            comunidadeInitialState: 0,
+            comunidadeSelecionada: 0,
+            eventoInitialState: 0,
+            eventoSelecionado: 0,
+            blocoInitialState: 0,
+            blocoSelecionado: 0,
         }
     }
 
@@ -68,21 +43,35 @@ class DistribuirQuartos extends React.Component {
         this.buscarEventos();
     }
 
-    selecionarQuarto = (quarto) => {
-        this.setState({ quartoSelecionado: quarto });
-    }
-
-    selecionarEvento = (evento) => {
-        this.setState({ eventoSelecionado: evento });
-    }
-
-    selecionarComunidade = (comunidade) => {
-        this.setState({ comunidadeSelecionada: comunidade });
+    selecionarCampo = (event) => {
+        if (event.target.name === "eveCodigo") {
+            this.setState({ eventoSelecionado: event.target.value });
+            this.state.eventoSelecionado = event.target.value;
+            this.buscarComunidades(event.target.value);
+        }
+        if (event.target.name === "comCodigo") {
+            this.setState({ comunidadeSelecionada: event.target.value });
+            this.state.comunidadeSelecionada = event.target.value;
+            this.buscarBlocos(event.target.value);
+        }
+        if (event.target.name === "bloCodigo") {
+            this.setState({ blocoSelecionado: event.target.value });
+            this.state.blocoSelecionado = event.target.value;
+            this.buscarQuartos(event.target.value);
+        }
+        this.recarregaDados();
     }
 
     recarregaDados = () => {
-        this.buscarBlocos();
-        this.buscarComunidades();
+        if (this.state.eventoSelecionado < 0) {
+            this.buscarEventos();
+        }
+        if (this.state.comunidadeSelecionada < 0) {
+            this.buscarComunidades();
+        }
+        if (this.state.blocoSelecionado < 0) {
+            this.buscarBlocos();
+        }
         this.buscarQuartos();
     }
 
@@ -97,21 +86,21 @@ class DistribuirQuartos extends React.Component {
         this.setState({ eventos: eventos, carregando: false });
     }
 
-    buscarBlocos = async () => {
+    buscarBlocos = async (id) => {
         this.setState({ carregando: true });
-        let blocos = await ApiAlocacao.getBlocos();
+        let blocos = await ApiAlocacao.getBlocos(this.state.comunidadeSelecionada);
         this.setState({ blocos: blocos, carregando: false });
     }
 
-    buscarComunidades = async () => {
+    buscarComunidades = async (id) => {
         this.setState({ carregando: true });
-        let comunidades = await ApiAlocacao.getComunidades();
+        let comunidades = await ApiAlocacao.getComunidades(id);
         this.setState({ comunidades: comunidades, carregando: false });
     }
 
-    buscarQuartos = async () => {
+    buscarQuartos = async (id) => {
         this.setState({ carregando: true });
-        let quartos = await ApiAlocacao.getQuartos();
+        let quartos = await ApiAlocacao.getQuartos(this.state.blocoSelecionado);
         this.setState({ quartos: quartos, carregando: false });
     }
 
@@ -126,7 +115,7 @@ class DistribuirQuartos extends React.Component {
                     <div className="row col-md-12 d-flex justify-content-around">
                         <div className="col-md-5 pb-3">
                             <label htmlFor="comunidade" className="form-label">Evento</label>
-                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.eventoSelecionado.eveCodigo} onChange={this.selecionarQuarto}>
+                            <select id="comunidade" className="form-select" name="eveCodigo" value={this.state.eventoSelecionado.eveCodigo} onChange={this.selecionarCampo}>
                                 <option value="1">Selecione um Evento</option>
                                 {this.state.eventos.map((evento) => {
                                     return (
@@ -137,7 +126,7 @@ class DistribuirQuartos extends React.Component {
                         </div>
                         <div className="col-md-5">
                             <label htmlFor="comunidade" className="form-label">Bloco</label>
-                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.blocoSelecionado.bloCodigo} onChange={this.handleChange} disabled={this.state.comunidadeSelecionada.comCodigo < 1}>
+                            <select id="comunidade" className="form-select" name="bloCodigo" value={this.state.blocoSelecionado.bloCodigo} onChange={this.selecionarCampo} disabled={this.state.comunidadeSelecionada < 1}>
                                 <option value="1">Selecione um Bloco</option>
                                 {this.state.blocos.map((bloco) => {
                                     return (
@@ -148,7 +137,7 @@ class DistribuirQuartos extends React.Component {
                         </div>
                         <div className="col-md-5">
                             <label htmlFor="comunidade" className="form-label">Comunidade</label>
-                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.comunidadeSelecionada.comCodigo} onChange={this.handleChange} disabled={this.state.eventoSelecionado.eveCodigo < 1}>
+                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.comunidadeSelecionada.comCodigo} onChange={this.selecionarCampo} disabled={this.state.eventoSelecionado < 2}>
                                 <option value="1">Selecione uma Comunidade</option>
                                 {this.state.comunidades.map((comunidade) => {
                                     return (
@@ -159,7 +148,7 @@ class DistribuirQuartos extends React.Component {
                         </div>
                         <div className="col-md-5">
                             <label htmlFor="comunidade" className="form-label">Quarto</label>
-                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.quartoSelecionado.quaCodigo} onChange={this.handleChange} disabled={this.state.blocoSelecionado.bloCodigo < 1}>
+                            <select id="comunidade" className="form-select" name="quaCodigo" value={this.state.quartoSelecionado.quaCodigo} onChange={this.selecionarCampo} disabled={this.state.blocoSelecionado < 1}>
                                 <option value="1">Selecione um Quarto</option>
                                 {this.state.quartos.map((quarto) => {
                                     return (

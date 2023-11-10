@@ -26,13 +26,13 @@ class DistribuirQuartos extends React.Component {
         this.props.funcAbrirCadastro(this.state.abrir);
     }
 
-    buscarEventos = () => { }
+    buscarEventos = async () => { }
 
-    buscarBlocos = () => { }
+    buscarBlocos = async () => { }
 
-    buscarComunidades = () => { }
+    buscarComunidades = async () => { }
 
-    buscarQuartos = () => { }
+    buscarQuartos = async () => { }
 
     render() {
         return (

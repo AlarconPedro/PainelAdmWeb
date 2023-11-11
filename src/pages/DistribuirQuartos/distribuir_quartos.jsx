@@ -108,9 +108,7 @@ class DistribuirQuartos extends React.Component {
         return (
             <Mestre icon="address-book" title="Distribuição de Quartos" subtitle="CCMZ">
                 <div className={this.props.tipoContainer}>
-                    <header>
-                        <h3>Alocar Quartos</h3>
-                    </header>
+                    <header><h3>Alocar Quartos</h3></header>
                     <hr />
                     <div className="row col-md-12 d-flex justify-content-around">
                         <div className="col-md-5 pb-3">

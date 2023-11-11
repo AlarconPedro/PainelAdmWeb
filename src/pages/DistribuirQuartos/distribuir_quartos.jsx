@@ -137,7 +137,7 @@ class DistribuirQuartos extends React.Component {
                         </div>
                         <div className="col-md-5">
                             <label htmlFor="comunidade" className="form-label">Comunidade</label>
-                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.comunidadeSelecionada.comCodigo} onChange={this.selecionarCampo} disabled={this.state.eventoSelecionado < 2}>
+                            <select id="comunidade" className="form-select" name="comCodigo" value={this.state.comunidadeSelecionada.comCodigo} onChange={this.selecionarCampo} disabled={this.state.eventoSelecionado < 1}>
                                 <option value="1">Selecione uma Comunidade</option>
                                 {this.state.comunidades.map((comunidade) => {
                                     return (

@@ -160,7 +160,6 @@ class DistribuirQuartos extends React.Component {
                     </div>
                     <hr />
                     <br />
-
                     {this.props.carregando ?
                         <div className="spinner-border loader" role="status" />
                         :

@@ -98,6 +98,12 @@ class DistribuirQuartos extends React.Component {
         this.setState({ comunidades: comunidades, carregando: false });
     }
 
+    buscarPessoasComunidade = async (id) => {
+        this.setState({ carregando: true });
+        let pessoasComunidade = await ApiAlocacao.getPessoasComunidade(id);
+        this.setState({ pessoasComunidade: pessoasComunidade, carregando: false });
+    }
+
     buscarQuartos = async (id) => {
         this.setState({ carregando: true });
         let quartos = await ApiAlocacao.getQuartos(this.state.eventoSelecionado);

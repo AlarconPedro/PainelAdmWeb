@@ -185,6 +185,7 @@ class Quarto extends React.Component {
                         <div className="col-md-4">
                             <label htmlFor="bloco" className="form-label">Bloco</label>
                             <select id="bloco" className="form-select" name="bloCodigo" value={this.state.quarto.bloCodigo} onChange={this.handleChange}>
+                                <option value="0">Selecione</option>
                                 {this.state.blocoData.map((bloco) => (
                                     <option value={bloco.bloCodigo}>{bloco.bloNome}</option>
                                 ))}

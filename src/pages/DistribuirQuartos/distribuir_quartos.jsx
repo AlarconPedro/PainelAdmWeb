@@ -88,7 +88,7 @@ class DistribuirQuartos extends React.Component {
 
     buscarBlocos = async (id) => {
         this.setState({ carregando: true });
-        let blocos = await ApiAlocacao.getBlocos(this.state.comunidadeSelecionada);
+        let blocos = await ApiAlocacao.getBlocos(this.state.eventoSelecionado);
         this.setState({ blocos: blocos, carregando: false });
     }
 
@@ -100,7 +100,7 @@ class DistribuirQuartos extends React.Component {
 
     buscarQuartos = async (id) => {
         this.setState({ carregando: true });
-        let quartos = await ApiAlocacao.getQuartos(this.state.blocoSelecionado);
+        let quartos = await ApiAlocacao.getQuartos(this.state.eventoSelecionado);
         this.setState({ quartos: quartos, carregando: false });
     }
 

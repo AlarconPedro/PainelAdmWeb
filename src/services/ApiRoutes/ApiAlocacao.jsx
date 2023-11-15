@@ -41,9 +41,9 @@ class ApiAlocacao {
         return comunidadesData;
     }
 
-    static getPessoasComunides = async (id) => {
+    static getPessoasComunide = async (evento, comunidade) => {
         let pessoasComunidadeData = [];
-        await AxiosConnection.get("alocacao/pessoasComunidade/" + id).then((response) => {
+        await AxiosConnection.get(`alocacao/pessoas/${evento}/${comunidade}`).then((response) => {
             pessoasComunidadeData = response.data;
         }).catch((error) => {
             console.log(error);

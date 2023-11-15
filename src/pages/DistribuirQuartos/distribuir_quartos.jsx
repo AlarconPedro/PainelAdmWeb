@@ -53,6 +53,7 @@ class DistribuirQuartos extends React.Component {
             this.setState({ comunidadeSelecionada: event.target.value });
             this.state.comunidadeSelecionada = event.target.value;
             this.buscarBlocos(event.target.value);
+            this.buscarPessoasComunidade(event.target.value);
         }
         if (event.target.name === "bloCodigo") {
             this.setState({ blocoSelecionado: event.target.value });
@@ -100,14 +101,23 @@ class DistribuirQuartos extends React.Component {
 
     buscarPessoasComunidade = async (id) => {
         this.setState({ carregando: true });
-        let pessoasComunidade = await ApiAlocacao.getPessoasComunidade(id);
-        this.setState({ pessoasComunidade: pessoasComunidade, carregando: false });
+        let pessoasComunidade = await ApiAlocacao.getPessoasComunide(this.state.eventoSelecionado, id);
+        this.atualizaDadosPessoasListBox(pessoasComunidade);
+        this.setState({ carregando: false });
     }
 
     buscarQuartos = async (id) => {
         this.setState({ carregando: true });
         let quartos = await ApiAlocacao.getQuartos(this.state.eventoSelecionado);
         this.setState({ quartos: quartos, carregando: false });
+    }
+
+    atualizaDadosPessoasListBox = (listaPessoas) => {
+        let pessoas = [];
+        listaPessoas.forEach((pessoa) => {
+            pessoas.push({ value: pessoa.pesCodigo, label: pessoa.pesNome });
+        });
+        this.setState({ pessoasComunidade: pessoas });
     }
 
     render() {

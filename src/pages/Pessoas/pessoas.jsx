@@ -269,6 +269,7 @@ class Pessoas extends React.Component {
                             <div className="col-md-5">
                                 <label htmlFor="comunidade" className="form-label">Comunidade</label>
                                 <select id="comunidade" className="form-select" name="comCodigo" value={this.state.pessoa.comCodigo} onChange={this.handleChange}>
+                                    <option value={"X"}>Escolha a Comunidade</option>
                                     {this.state.comunidadeData.map((comunidade) => (
                                         <option value={comunidade.comCodigo}>{comunidade.comNome} - {comunidade.comCidade}</option>
                                     ))}
@@ -277,6 +278,7 @@ class Pessoas extends React.Component {
                             <div className="col-md-2">
                                 <label htmlFor="status" className="form-label">Gênero</label>
                                 <select id="status" className="form-select" name="pesGenero" value={this.state.pessoa.pesGenero} onChange={this.handleChange}>
+                                    <option value={"X"}>Escolha o Sexo</option>
                                     <option value={"M"}>Masculino</option>
                                     <option value={"F"}>Feminino</option>
                                 </select>

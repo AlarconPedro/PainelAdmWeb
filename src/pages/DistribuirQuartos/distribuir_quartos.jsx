@@ -60,6 +60,10 @@ class DistribuirQuartos extends React.Component {
             this.state.blocoSelecionado = event.target.value;
             this.buscarQuartos(event.target.value);
         }
+        if (event.target.name === "quaCodigo") {
+            this.setState({ quartoSelecionado: event.target.value });
+            this.state.quartoSelecionado = event.target.value;
+        }
         this.recarregaDados();
     }
 
@@ -104,6 +108,12 @@ class DistribuirQuartos extends React.Component {
         let pessoasComunidade = await ApiAlocacao.getPessoasComunide(this.state.eventoSelecionado, id);
         this.atualizaDadosPessoasListBox(pessoasComunidade);
         this.setState({ carregando: false });
+    }
+
+    buscarPessoasQuarto = async (id) => {
+        this.setState({ carregando: true });
+        let pessoasQuarto = await ApiAlocacao.getPessoasQuarto(this.state.eventoSelecionado, id);
+        this.setState({ pessoasQuarto: pessoasQuarto, carregando: false });
     }
 
     buscarQuartos = async (id) => {

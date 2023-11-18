@@ -11,9 +11,9 @@ class ApiAlocacao {
         return eventosData;
     }
 
-    static getQuartos = async (id) => {
+    static getQuartos = async (codigoEvento, codigoBloco) => {
         let quartosData = [];
-        await AxiosConnection.get("alocacao/quartos/" + id).then((response) => {
+        await AxiosConnection.get(`alocacao/quartos/${codigoEvento}/${codigoBloco}`).then((response) => {
             quartosData = response.data;
         }).catch((error) => {
             console.log(error);

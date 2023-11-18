@@ -58,7 +58,7 @@ class DistribuirQuartos extends React.Component {
         if (event.target.name === "bloCodigo") {
             this.setState({ blocoSelecionado: event.target.value });
             this.state.blocoSelecionado = event.target.value;
-            this.buscarQuartos(event.target.value);
+            this.buscarQuartos(this.state.eventoSelecionado, this.state.blocoSelecionado);
         }
         if (event.target.name === "quaCodigo") {
             this.setState({ quartoSelecionado: event.target.value });
@@ -77,7 +77,10 @@ class DistribuirQuartos extends React.Component {
         if (this.state.blocoSelecionado < 0) {
             this.buscarBlocos();
         }
-        this.buscarQuartos();
+        if (this.state.quartoSelecionado < 0) {
+            this.buscarQuartos();
+        }
+        // this.buscarQuartos();
     }
 
     abrirFecharCadastro = () => {
@@ -116,9 +119,9 @@ class DistribuirQuartos extends React.Component {
         this.setState({ pessoasQuarto: pessoasQuarto, carregando: false });
     }
 
-    buscarQuartos = async (id) => {
+    buscarQuartos = async (codigoEvento, codigoBloco) => {
         this.setState({ carregando: true });
-        let quartos = await ApiAlocacao.getQuartos(this.state.eventoSelecionado);
+        let quartos = await ApiAlocacao.getQuartos(codigoEvento, codigoBloco);
         this.setState({ quartos: quartos, carregando: false });
     }
 

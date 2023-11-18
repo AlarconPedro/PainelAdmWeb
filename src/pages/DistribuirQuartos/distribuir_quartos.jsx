@@ -63,6 +63,7 @@ class DistribuirQuartos extends React.Component {
         if (event.target.name === "quaCodigo") {
             this.setState({ quartoSelecionado: event.target.value });
             this.state.quartoSelecionado = event.target.value;
+            this.buscarPessoasQuarto(event.target.value);
         }
         this.recarregaDados();
     }
@@ -115,7 +116,7 @@ class DistribuirQuartos extends React.Component {
 
     buscarPessoasQuarto = async (id) => {
         this.setState({ carregando: true });
-        let pessoasQuarto = await ApiAlocacao.getPessoasQuarto(this.state.eventoSelecionado, id);
+        let pessoasQuarto = await ApiAlocacao.getPessoasQuarto(id);
         this.setState({ pessoasQuarto: pessoasQuarto, carregando: false });
     }
 
@@ -187,6 +188,14 @@ class DistribuirQuartos extends React.Component {
                     </div>
                     <hr />
                     <br />
+                    <div className="row col-md-12 d-flex justify-content-around">
+                        <div className="col-md-6">
+                            <label htmlFor="status" className="form-label mb-0">Pessoas</label>
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="status" className="form-label mb-0">Camas Disponíveis ( )</label>
+                        </div>
+                    </div>
                     {this.props.carregando ?
                         <div className="spinner-border loader" role="status" />
                         :
@@ -194,7 +203,7 @@ class DistribuirQuartos extends React.Component {
                             <DualListBox
                                 options={this.state.pessoasComunidade}
                                 selected={this.state.pessoasQuarto}
-                                onChange={(value) => this.setState({ selectedQuartos: value })}
+                                onChange={(value) => this.setState({ pessoasQuarto: value })}
                             />
                         </div>
                     }

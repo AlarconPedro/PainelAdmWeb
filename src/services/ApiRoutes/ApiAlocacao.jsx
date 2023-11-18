@@ -51,9 +51,9 @@ class ApiAlocacao {
         return pessoasComunidadeData;
     }
 
-    static getPessoasQuarto = async (evento, quarto) => {
+    static getPessoasQuarto = async (quarto) => {
         let pessoasQuartoData = [];
-        await AxiosConnection.get(`alocacao/pessoas/${evento}/${quarto}`).then((response) => {
+        await AxiosConnection.get(`alocacao/pessoas/quarto/${quarto}`).then((response) => {
             pessoasQuartoData = response.data;
         }).catch((error) => {
             console.log(error);

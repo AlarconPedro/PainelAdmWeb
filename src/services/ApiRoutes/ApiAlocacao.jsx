@@ -58,6 +58,7 @@ class ApiAlocacao {
         }).catch((error) => {
             console.log(error);
         });
+
         return pessoasQuartoData;
     }
 }

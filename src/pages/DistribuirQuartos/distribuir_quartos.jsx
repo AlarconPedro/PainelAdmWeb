@@ -126,6 +126,20 @@ class DistribuirQuartos extends React.Component {
         this.setState({ quartos: quartos, carregando: false });
     }
 
+    adicionarPessoasQuarto = async (pessoa) => {
+        this.setState({ pessoasQuarto: pessoa });
+        await this.addPessoasQuarto();
+    }
+
+    addPessoasQuarto = async () => {
+        let retorno = await ApiAlocacao.postPessoasQuarto(this.state.pessoasQuarto);
+        if (retorno === 200) {
+            this.buscarPessoasQuarto(this.state.quartoSelecionado);
+        } else {
+            alert("Erro ao adicionar pessoas!");
+        }
+    }
+
     atualizaDadosPessoasListBox = (listaPessoas) => {
         let pessoas = [];
         listaPessoas.forEach((pessoa) => {
@@ -203,7 +217,7 @@ class DistribuirQuartos extends React.Component {
                             <DualListBox
                                 options={this.state.pessoasComunidade}
                                 selected={this.state.pessoasQuarto}
-                                onChange={(value) => this.setState({ pessoasQuarto: value })}
+                                onChange={(value) => this.adicionarPessoasQuarto(value)}
                             />
                         </div>
                     }

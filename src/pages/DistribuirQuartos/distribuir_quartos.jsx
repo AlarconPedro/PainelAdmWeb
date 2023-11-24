@@ -74,6 +74,7 @@ class DistribuirQuartos extends React.Component {
             this.setState({ quartoSelecionado: event.target.value });
             this.state.quartoSelecionado = event.target.value;
             this.buscarPessoasQuarto(event.target.value);
+            this.buscarPessoasComunidade(this.state.comunidadeSelecionada);
         }
         this.recarregaDados();
     }
@@ -126,8 +127,12 @@ class DistribuirQuartos extends React.Component {
 
     buscarPessoasQuarto = async (id) => {
         this.setState({ carregando: true });
-        let pessoasQuarto = await ApiAlocacao.getPessoasQuarto(id);
-        this.setState({ pessoasQuarto: pessoasQuarto, carregando: false });
+        let listaPessoasAlocadas = [];
+        let retorno = await ApiAlocacao.getPessoasQuarto(id);
+        retorno.forEach((pessoa) => {
+            listaPessoasAlocadas.push(pessoa.pesCodigo);
+        });
+        this.setState({ pessoasQuarto: listaPessoasAlocadas, carregando: false });
     }
 
     buscarQuartos = async (codigoEvento, codigoBloco) => {
@@ -158,17 +163,19 @@ class DistribuirQuartos extends React.Component {
             retorno = await ApiAlocacao.postPessoaQuarto(pessoa[i]);
             if (retorno === 200) {
                 listaPessoasQuarto.push(pessoa[i]);
+                this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState });
+                this.buscarPessoasQuarto(this.state.quartoSelecionado);
             } else {
                 alert("Erro ao adicionar pessoas!");
             }
         }
-        retorno = await ApiAlocacao.postPessoaQuarto(pessoa);
-        if (retorno === 200) {
-            // alert("Pessoas adicionadas com sucesso!");
-            this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState, pessoasQuarto: listaPessoas });
-        } else {
-            alert("Erro ao adicionar pessoas!");
-        }
+        // retorno = await ApiAlocacao.postPessoaQuarto(pessoa);
+        // if (retorno === 200) {
+        //     // alert("Pessoas adicionadas com sucesso!");
+        //     this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState, pessoasQuarto: listaPessoas });
+        // } else {
+        //     alert("Erro ao adicionar pessoas!");
+        // }
     }
 
     atualizaDadosPessoasListBox = (listaPessoas) => {

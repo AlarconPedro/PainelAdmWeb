@@ -63,11 +63,13 @@ class ApiAlocacao {
     }
 
     static postPessoaQuarto = async (pessoaQuarto) => {
+        let retorno;
         await AxiosConnection.post("alocacao/pessoa/quarto", pessoaQuarto).then((response) => {
-            return response.status;
+            retorno = response.status;
         }).catch((error) => {
             return error.response.status;
         });
+        return retorno;
     }
 }
 

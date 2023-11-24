@@ -141,6 +141,18 @@ class DistribuirQuartos extends React.Component {
         this.setState({ quartos: quartos, carregando: false });
     }
 
+    alteraDadosListBox = async (value) => {
+        let status;
+        if (this.state.pessoasQuarto.length > 0 && value.length < this.state.pessoasQuarto.length) {
+            status = await this.removerPessoasQuarto(this.state.quartoSelecionado);
+            if (status === 200) {
+                this.adicionarPessoasQuarto(value);
+            }
+        } else {
+            this.adicionarPessoasQuarto(value);
+        }
+    }
+
     adicionarPessoasQuarto = async (pessoa) => {
         await this.preparaDadosPessoasListBox(pessoa);
     }
@@ -149,14 +161,14 @@ class DistribuirQuartos extends React.Component {
         let pessoas = [];
         listaPessoas.forEach((pessoa) => {
             this.state.modelPessoaQuarto.pesCodigo = pessoa;
-            this.state.modelPessoaQuarto.quaCodigo = parseInt(this.state.quartoSelecionado);
+            this.state.modelPessoaQuarto.quaCdoigo = parseInt(this.state.quartoSelecionado);
             this.state.modelPessoaQuarto.qupCodigo = 0;
             pessoas.push(this.state.modelPessoaQuarto);
         });
-        this.addPessoasQuarto(pessoas, listaPessoas);
+        this.addPessoasQuarto(pessoas);
     }
 
-    addPessoasQuarto = async (pessoa, listaPessoas) => {
+    addPessoasQuarto = async (pessoa) => {
         let retorno;
         let listaPessoasQuarto = [];
         for (let i = 0; i < pessoa.length; i++) {
@@ -169,13 +181,6 @@ class DistribuirQuartos extends React.Component {
                 alert("Erro ao adicionar pessoas!");
             }
         }
-        // retorno = await ApiAlocacao.postPessoaQuarto(pessoa);
-        // if (retorno === 200) {
-        //     // alert("Pessoas adicionadas com sucesso!");
-        //     this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState, pessoasQuarto: listaPessoas });
-        // } else {
-        //     alert("Erro ao adicionar pessoas!");
-        // }
     }
 
     atualizaDadosPessoasListBox = (listaPessoas) => {
@@ -186,6 +191,27 @@ class DistribuirQuartos extends React.Component {
         this.setState({ pessoasComunidade: pessoas });
     }
 
+    removerPessoasQuarto = async (pessoa) => {
+        let retorno;
+        retorno = await ApiAlocacao.limparPessoasQuarto(this.state.quartoSelecionado);
+        if (retorno === 200) {
+            this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState });
+        }
+        return retorno;
+        //     let retorno;
+        //     let listaPessoasQuarto = [];
+        //     for (let i = 0; i < pessoa.length; i++) {
+        //         retorno = await ApiAlocacao.deletePessoaQuarto(pessoa[i]);
+        //         if (retorno === 200) {
+        //             listaPessoasQuarto.push(pessoa[i]);
+        //             this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState });
+        //             this.buscarPessoasQuarto(this.state.quartoSelecionado);
+        //         } else {
+        //             alert("Erro ao remover pessoas!");
+        //         }
+        //     }
+        // }
+    }
     render() {
         return (
             <Mestre icon="address-book" title="Distribuição de Quartos" subtitle="CCMZ">
@@ -255,7 +281,7 @@ class DistribuirQuartos extends React.Component {
                             <DualListBox
                                 options={this.state.pessoasComunidade}
                                 selected={this.state.pessoasQuarto}
-                                onChange={(value) => this.adicionarPessoasQuarto(value)}
+                                onChange={(value) => this.alteraDadosListBox(value)}
                             />
                         </div>
                     }

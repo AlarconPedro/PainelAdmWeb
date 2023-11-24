@@ -71,6 +71,26 @@ class ApiAlocacao {
         });
         return retorno;
     }
+
+    static deletePessoaQuarto = async (pessoaQuarto) => {
+        let retorno;
+        await AxiosConnection.delete("alocacao/pessoa/quarto", { data: pessoaQuarto }).then((response) => {
+            retorno = response.status;
+        }).catch((error) => {
+            return error.response.status;
+        });
+        return retorno;
+    }
+
+    static limparPessoasQuarto = async (quarto) => {
+        let retorno;
+        await AxiosConnection.delete(`alocacao/pessoas/quarto/${parseInt(quarto)}`).then((response) => {
+            retorno = response.status;
+        }).catch((error) => {
+            return error.response.status;
+        });
+        return retorno;
+    }
 }
 
 export default ApiAlocacao;

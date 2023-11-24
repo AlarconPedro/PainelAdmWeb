@@ -145,11 +145,13 @@ class DistribuirQuartos extends React.Component {
         let status;
         if (this.state.pessoasQuarto.length > 0 && value.length < this.state.pessoasQuarto.length) {
             status = await this.removerPessoasQuarto(this.state.quartoSelecionado);
+            console.log(this.state.modelPessoaQuarto);
             if (status === 200) {
                 this.adicionarPessoasQuarto(value);
             }
         } else {
             this.adicionarPessoasQuarto(value);
+            console.log(this.state.modelPessoaQuarto);
         }
     }
 
@@ -161,7 +163,7 @@ class DistribuirQuartos extends React.Component {
         let pessoas = [];
         listaPessoas.forEach((pessoa) => {
             this.state.modelPessoaQuarto.pesCodigo = pessoa;
-            this.state.modelPessoaQuarto.quaCdoigo = parseInt(this.state.quartoSelecionado);
+            this.state.modelPessoaQuarto.quaCodigo = parseInt(this.state.quartoSelecionado);
             this.state.modelPessoaQuarto.qupCodigo = 0;
             pessoas.push(this.state.modelPessoaQuarto);
         });

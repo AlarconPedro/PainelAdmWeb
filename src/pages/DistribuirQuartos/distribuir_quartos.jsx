@@ -53,7 +53,7 @@ class DistribuirQuartos extends React.Component {
         this.buscarEventos();
     }
 
-    selecionarCampo = (event) => {
+    selecionarCampo = async (event) => {
         if (event.target.name === "eveCodigo") {
             this.setState({ eventoSelecionado: event.target.value });
             this.state.eventoSelecionado = event.target.value;
@@ -73,8 +73,9 @@ class DistribuirQuartos extends React.Component {
         if (event.target.name === "quaCodigo") {
             this.setState({ quartoSelecionado: event.target.value });
             this.state.quartoSelecionado = event.target.value;
+            this.state.pessoasComunidade = [];
+            // this.buscarPessoasComunidade(this.state.comunidadeSelecionada);
             this.buscarPessoasQuarto(event.target.value);
-            this.buscarPessoasComunidade(this.state.comunidadeSelecionada);
         }
         this.recarregaDados();
     }
@@ -132,6 +133,12 @@ class DistribuirQuartos extends React.Component {
         retorno.forEach((pessoa) => {
             listaPessoasAlocadas.push(pessoa.pesCodigo);
         });
+        let pessoas = await ApiAlocacao.getPessoasTotal(this.state.eventoSelecionado, this.state.comunidadeSelecionada);
+        if (retorno.length > 0) {
+            this.atualizaDadosPessoasListBox(pessoas);
+        } else {
+            this.buscarPessoasComunidade(this.state.comunidadeSelecionada);
+        }
         this.setState({ pessoasQuarto: listaPessoasAlocadas, carregando: false });
     }
 

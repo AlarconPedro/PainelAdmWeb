@@ -328,7 +328,7 @@ class Eventos extends React.Component {
                                 </td>
                                 <td>
                                     {/* <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Hospedes")}><BsPeopleFill /></td> */}
-                                    <td className="pl-5 pt-lg-2 listar"><Link to={"/hospedes"}><i><BsPeopleFill /></i></Link></td>
+                                    <td className="pl-5 pt-lg-2 listar"><Link to={"/hospedes"} state={{ from: evento.eveCodigo }}><i><BsPeopleFill /></i></Link></td>
                                 </td>
                                 <td>
                                     <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Distribuir")}><BsHouseFill /></td>

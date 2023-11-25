@@ -16,7 +16,7 @@ class Hospedes extends React.Component {
     }
 
     getHospedes = async () => {
-
+        this.setState({ carregando: false });
     }
 
     abrirFecharCadastro = () => {
@@ -24,6 +24,7 @@ class Hospedes extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({ carregando: true });
         this.getHospedes();
     }
 
@@ -33,7 +34,7 @@ class Hospedes extends React.Component {
                 <FormModel
                     titulo="Listagem de Hóspedes"
                     subtitulo="CCMZ"
-                    icone="calendar"
+                    icone="user"
                     tipoContainer="form-container"
                     Cabecalho="Hóspedes"
                     BotaoAdd="Adicionar Hóspede"
@@ -53,14 +54,14 @@ class Hospedes extends React.Component {
                             <tr key={hospede.pesCodigo}>
                                 <td className="pt-3">{hospede.pesNome}</td>
                                 <td className="pt-3"></td>
-                                <div className="col-md-6">
+                                <div className="col-md-3">
                                     <div className="form-check form-check-inline">
                                         <input className="form-check-input" type="checkbox" id="pesCatequista" value="pesCatequista" name="pesCatequista" onChange={this.handleCheck} />
-                                        <label className="form-check-label" for="pesCatequista">Catequista</label>
+                                        <label className="form-check-label" for="pesCatequista">Pagante</label>
                                     </div>
                                     <div className="form-check form-check-inline">
                                         <input className="form-check-input" type="checkbox" id="pesSalmista" value="pesSalmista" name="pesSalmista" onChange={this.handleCheck} />
-                                        <label className="form-check-label" for="pesSalmista">Salmista</label>
+                                        <label className="form-check-label" for="pesSalmista">Cobrante</label>
                                     </div>
                                 </div>
                                 <td>

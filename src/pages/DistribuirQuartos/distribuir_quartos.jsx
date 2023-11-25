@@ -144,10 +144,10 @@ class DistribuirQuartos extends React.Component {
     alteraDadosListBox = async (value) => {
         let status;
         if (this.state.pessoasQuarto.length > 0 && value.length < this.state.pessoasQuarto.length) {
-            status = await this.removerPessoasQuarto(this.state.quartoSelecionado);
+            status = await this.removerPessoasQuarto(value);
             console.log(this.state.modelPessoaQuarto);
             if (status === 200) {
-                this.adicionarPessoasQuarto(value);
+                this.buscarPessoasComunidade(this.state.comunidadeSelecionada);
             }
         } else {
             this.adicionarPessoasQuarto(value);
@@ -193,11 +193,21 @@ class DistribuirQuartos extends React.Component {
         this.setState({ pessoasComunidade: pessoas });
     }
 
+    adicionarDadosPessoasListBox = (listaPessoas) => {
+        let pessoas = [];
+        listaPessoas.forEach((pessoa) => {
+            pessoas.push({ value: pessoa.pesCodigo, label: pessoa.pesNome });
+        });
+        this.setState({ pessoasComunidade: { ...this.state.pessoasComunidade, pessoasComunidade: pessoas } });
+
+    }
+
     removerPessoasQuarto = async (pessoa) => {
         let retorno;
         retorno = await ApiAlocacao.limparPessoasQuarto(this.state.quartoSelecionado);
         if (retorno === 200) {
             this.setState({ modelPessoaQuarto: this.state.modelPessoaQuartoInitialState });
+            this.setState({ pessoasQuarto: pessoa });
         }
         return retorno;
         //     let retorno;

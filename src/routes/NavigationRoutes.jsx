@@ -7,6 +7,7 @@ import Quartos from '../pages/Quartos/quartos';
 import Eventos from '../pages/Eventos/eventos';
 import Usuarios from '../pages/Usuarios/usuarios'
 import Pessoas from '../pages/Pessoas/pessoas'
+import Hospedes from '../pages/Hospedes/hospedes';
 import Comunidade from '../pages/Comunidade/comunidade';
 import DistribuirQuartos from '../pages/DistribuirQuartos/distribuir_quartos';
 
@@ -18,6 +19,7 @@ export default nav => {
             <Route path="/quartos" element={<Quartos />} />
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/pessoas" element={<Pessoas />} />
+            <Route path="/hospedes" element={<Hospedes />} />
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/distribuir" element={<DistribuirQuartos />} />
             {localStorage.getItem("Admin") === "true" ?

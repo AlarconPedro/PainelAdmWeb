@@ -20,6 +20,8 @@ import ConverteData from "../../classes/Funcoes/ConverteData";
 import DataToPost from "../../classes/Funcoes/DataToPost";
 
 import DualListBox from 'react-dual-listbox';
+import { Link } from "react-router-dom";
+
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -325,7 +327,8 @@ class Eventos extends React.Component {
                                     <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Quartos")}><FaBed /></td>
                                 </td>
                                 <td>
-                                    <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Hospedes")}><BsPeopleFill /></td>
+                                    {/* <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Hospedes")}><BsPeopleFill /></td> */}
+                                    <td className="pl-5 pt-lg-2 listar"><Link to={"/hospedes"}><i><BsPeopleFill /></i></Link></td>
                                 </td>
                                 <td>
                                     <td className="pl-5 pt-lg-2 listar" onClick={() => this.selecionarEvento(evento, "Distribuir")}><BsHouseFill /></td>

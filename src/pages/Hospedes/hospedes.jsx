@@ -135,6 +135,7 @@ function Hospedes() {
                                 <button className="btn btn-danger" onClick={() => selecionaHospede(hospede, "Excluir")}>
                                     <i className="fa fa-trash"></i>
                                 </button>
+
                             </td>
                         </tr>
                     ))}

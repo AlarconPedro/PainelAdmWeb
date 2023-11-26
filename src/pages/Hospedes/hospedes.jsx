@@ -123,10 +123,10 @@ function Hospedes() {
                             <td className="pt-3">{hospede.pesNome}</td>
                             <td className="pt-3">{hospede.comunidade}</td>
                             <td className="pt-3">
-                                <input className="form-check-input" type="checkbox" id="pagante" value="pagante" checked={hospede.pagante} />
+                                <input className="form-check-input" type="checkbox" id="pagante" value="pagante" checked={hospede.pagante === null ? true : false} />
                             </td>
                             <td className="pt-3">
-                                <input className="form-check-input" type="checkbox" id="cobrante" value="cobrante" checked={hospede.cobrante} />
+                                <input className="form-check-input" type="checkbox" id="cobrante" value="cobrante" checked={hospede.cobrante === null ? true : false} />
                             </td>
                             <td>
                                 <button className="btn btn-warning" onClick={() => selecionaHospede(hospede, "Editar")}>
